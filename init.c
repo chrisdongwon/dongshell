@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:02:38 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/18 16:26:52 by cwon             ###   ########.fr       */
+/*   Updated: 2025/05/20 18:50:23 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,6 @@ void	init_shell(t_shell *shell)
 	shell->prompt = 0;
 	shell->last_exit_status = 0;
 	shell->token_list = 0;
+	if (!init_lexer(&shell->lexer))
+		exit(EXIT_FAILURE);
 }

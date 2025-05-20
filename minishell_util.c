@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:28:06 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/18 16:28:38 by cwon             ###   ########.fr       */
+/*   Updated: 2025/05/20 18:51:42 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	lexer(t_shell *shell)
 	const char	*ptr;
 	t_token		*token;
 
+	flush_lexer(&shell->lexer);
 	if (!init_lexer(&shell->lexer))
 		return (perror("init_lexer (from lexer) failed"));
 	ptr = shell->command;
