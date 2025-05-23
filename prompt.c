@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 00:30:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/11 18:46:31 by cwon             ###   ########.fr       */
+/*   Updated: 2025/05/23 10:06:04 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,23 @@
 
 static char	*build_prompt(const char *user, const char *host, char *cwd)
 {
-	char	*result;
-	size_t	len;
+	char		*result;
+	t_string	str;
 
-	len = ft_strlen(user) + ft_strlen(host) + ft_strlen(cwd) + 5;
-	result = (char *)malloc(len);
-	if (!result)
+	if (!init_string(&str))
 	{
 		free(cwd);
 		return (0);
 	}
-	result[0] = 0;
-	ft_strlcat(result, user, len);
-	ft_strlcat(result, "@", len);
-	ft_strlcat(result, host, len);
-	ft_strlcat(result, ":", len);
-	ft_strlcat(result, cwd, len);
-	ft_strlcat(result, "$ ", len);
+	append_string(&str, user);
+	append_string(&str, "@");
+	append_string(&str, host);
+	append_string(&str, ":");
+	append_string(&str, cwd);
+	append_string(&str, "$ ");
 	free(cwd);
+	result = ft_strdup(str.buffer);
+	free_string(&str);
 	return (result);
 }
 
@@ -72,6 +71,6 @@ char	*generate_prompt(void)
 	get_hostname(host);
 	cwd = getcwd(0, 0);
 	if (!cwd)
-		cwd = "unknown_dir";
+		cwd = ft_strdup("unknown_dir");
 	return (build_prompt(user, host, cwd));
 }

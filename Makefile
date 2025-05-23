@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/05/20 18:49:10 by cwon             ###   ########.fr        #
+#    Updated: 2025/05/23 09:23:49 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,24 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 HEADER = \
+	ast.h \
 	lexer.h \
 	minishell.h \
+	parser.h \
 	signal_handler.h
 SRC = \
+	ast.c \
 	flush.c \
 	init.c \
 	lexer_util.c \
 	lexer.c \
 	minishell_util.c \
 	minishell.c \
+	parser_command.c \
+	parser_redir.c \
+	parser_subshell.c \
+	parser_util.c \
+	parser.c \
 	prompt.c \
 	signal_handler.c \
 	token.c

@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 00:18:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/19 13:25:33 by cwon             ###   ########.fr       */
+/*   Updated: 2025/05/20 22:04:17 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ bool	add_token(t_list **lst, t_token *token)
 	if (!node)
 	{
 		perror("ft_lstnew (from add_token) failed");
-		free_token(token);
 		return (false);
 	}
 	ft_lstadd_back(lst, node);

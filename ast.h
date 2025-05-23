@@ -1,35 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flush.c                                            :+:      :+:    :+:   */
+/*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:56:40 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/20 19:08:12 by cwon             ###   ########.fr       */
+/*   Created: 2025/05/20 19:06:21 by cwon              #+#    #+#             */
+/*   Updated: 2025/05/20 19:45:15 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef AST_H
+# define AST_H
 
-void	error_exit(t_shell *shell, const char *error_message)
-{
-	flush(shell);
-	perror(error_message);
-	exit(EXIT_FAILURE);
-}
+# include "lexer.h"
 
-void	flush_lexer(t_lexer *lexer)
-{
-	free_string(&lexer->str);
-}
+typedef enum e_ast_type	t_ast_type;
+typedef struct s_ast	t_ast;
 
-void	flush(t_shell *shell)
+enum e_ast_type
 {
-	free(shell->command);
-	free(shell->prompt);
-	flush_lexer(&shell->lexer);
-	ft_lstclear(&shell->token_list, free_token);
-	free_ast(shell->ast);
-	shell->ast = 0;
-}
+	AST_AND,
+	AST_COMMAND,
+	AST_OR,
+	AST_PIPE,
+	AST_SUBSHELL
+};
+
+struct s_ast
+{
+	t_ast		*left;
+	t_ast		*right;
+	t_ast_type	type;
+	t_list		*argv_list;
+	t_list		*redir_list;
+};
+
+// ast.c
+t_ast	*new_ast(t_ast *left, t_ast *right, t_ast_type type);
+void	free_ast(t_ast *ast);
+
+#endif
