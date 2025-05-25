@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 23:05:07 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/22 15:25:13 by cwon             ###   ########.fr       */
+/*   Updated: 2025/05/25 23:51:50 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_ast	*parse(t_parser *parser)
 	t_ast_type	type;
 
 	if (parser->syntax_error || parser->syntax_error)
-		return (0);	
+		return (0);
 	left = parse_pipeline(parser);
 	if (!left)
 		return (0);

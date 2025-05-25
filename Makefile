@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/05/23 09:23:49 by cwon             ###   ########.fr        #
+#    Updated: 2025/05/25 23:45:30 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,17 +21,19 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 HEADER = \
 	ast.h \
+	envp.h \
 	lexer.h \
 	minishell.h \
 	parser.h \
 	signal_handler.h
 SRC = \
 	ast.c \
+	envp_util.c \
+	envp.c \
 	flush.c \
 	init.c \
 	lexer_util.c \
 	lexer.c \
-	minishell_util.c \
 	minishell.c \
 	parser_command.c \
 	parser_redir.c \
@@ -44,18 +46,12 @@ SRC = \
 MAIN = main.c
 OBJ = $(SRC:.c=.o) $(MAIN:.c=.o)
 
-BONUS_HEADER = \
-	minishell_bonus.h
-BONUS_SRC = \
-	minishell_bonus.c
-BONUS_OBJ = $(BONUS_SRC:.c=.o) $(SRC:.c=.o)
-
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ) $(HEADER)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT) $(LDFLAGS)
 
-bonus: $(BONUS_EXEC)
+bonus: all
 
 $(BONUS_EXEC): $(LIBFT) $(OBJ) $(BONUS_OBJ) $(HEADER) $(BONUS_HEADER)
 	$(CC) $(CFLAGS) $(OBJ) $(BONUS_OBJ) -o $(BONUS_EXEC) $(LIBFT)

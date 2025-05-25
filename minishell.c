@@ -6,126 +6,78 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 00:17:46 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/23 10:07:47 by cwon             ###   ########.fr       */
+/*   Updated: 2025/05/25 23:50:53 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-const char *token_type_to_string(t_token_type type)
+static void	lexer(t_shell *shell)
 {
-	switch (type)
-	{
-		case TOKEN_AND:         return "TOKEN_AND";
-		case TOKEN_APPEND:      return "TOKEN_APPEND";
-		case TOKEN_END:         return "TOKEN_END";
-		case TOKEN_ERROR:       return "TOKEN_ERROR";
-		case TOKEN_HEREDOC:     return "TOKEN_HEREDOC";
-		case TOKEN_OR:          return "TOKEN_OR";
-		case TOKEN_PAREN_CLOSE: return "TOKEN_PAREN_CLOSE";
-		case TOKEN_PAREN_OPEN:  return "TOKEN_PAREN_OPEN";
-		case TOKEN_PIPE:        return "TOKEN_PIPE";
-		case TOKEN_REDIR_IN:    return "TOKEN_REDIR_IN";
-		case TOKEN_REDIR_OUT:   return "TOKEN_REDIR_OUT";
-		case TOKEN_WORD:        return "TOKEN_WORD";
-		default:                return "UNKNOWN_TOKEN";
-	}
-}
+	const char	*ptr;
+	t_token		*token;
 
-void	print_token(void *arg)
-{
-	t_token			*token;
-
-	token = (t_token *)arg;
-	if (!token)	
-		return ;
-	printf("[Type: %s] [Value: %s] [Quote: %c]\n",
-token_type_to_string(token->type), token->value, token->quote);
-}
-
-void	print_value(void *arg)
-{
-	t_token			*token;
-
-	token = (t_token *)arg;
+	flush_lexer(&shell->lexer);
+	if (!init_lexer(&shell->lexer))
+		return (perror("init_lexer (from lexer) failed"));
+	ptr = shell->command;
+	token = get_next_token(&shell->lexer, &ptr);
 	if (!token)
-		return ;
-	printf(" %s", token->value);
-}
-
-void print_redirects(t_list *redir)
-{
-	t_token	*token;
-
-    while (redir)
+		return (perror("get_next_token (from lexer) failed"));
+	while (token->type != TOKEN_END && token->type != TOKEN_ERROR)
 	{
-		token = (t_token *)redir->content;
-        const char *type = "";
-        switch (token->type)
-		{
-            case TOKEN_REDIR_IN:     type = "<"; break;
-            case TOKEN_REDIR_OUT:    type = ">"; break;
-            case TOKEN_APPEND: type = ">>"; break;
-            case TOKEN_HEREDOC: type = "<<"; break;
-			default: type = "";
-        }
-        printf(" %s %s", type, token->value);
-        redir = redir->next;
-    }
+		if (!add_token(&shell->token_list, token))
+			return (free_token(token));
+		free_string(&shell->lexer.str);
+		if (!init_string(&shell->lexer.str))
+			return (perror("init_string (from lexer) failed"));
+		token = get_next_token(&shell->lexer, &ptr);
+		if (!token)
+			return (perror("get_next_token (from lexer) failed"));
+	}
+	if (token->type == TOKEN_ERROR)
+		shell->lexer.success = false;
+	free_token(token);
 }
 
-void print_ast(t_ast *ast, int indent) 
+static void	parser(t_shell *shell)
 {
-    if (!ast) return;
-    for (int i = 0; i < indent; ++i) printf("  ");
+	init_parser(shell);
+	shell->ast = parse(&shell->parser);
+	if (shell->parser.system_error)
+		return ;
+	if (shell->parser.syntax_error)
+		printf("minishell: syntax error\n");
+	else
+		printf("parser success\n");
+}
 
-    switch (ast->type) {
-        case AST_COMMAND:
-            printf("COMMAND:");
-            ft_lstiter(ast->argv_list, print_value);
-            print_redirects(ast->redir_list);
-            printf("\n");
-            break;
-
-        case AST_PIPE:
-            printf("PIPE:\n");
-            print_ast(ast->left, indent + 1);
-            print_ast(ast->right, indent + 1);
-            break;
-
-        case AST_AND:
-            printf("AND:\n");
-            print_ast(ast->left, indent + 1);
-            print_ast(ast->right, indent + 1);
-            break;
-
-        case AST_OR:
-            printf("OR:\n");
-            print_ast(ast->left, indent + 1);
-            print_ast(ast->right, indent + 1);
-            break;
-
-        case AST_SUBSHELL:
-            printf("SUBSHELL:\n");
-            print_ast(ast->left, indent + 1);
-			if (ast->redir_list)
-			{
-				for (int i = 0; i < indent + 1; ++i) printf("  ");
-				printf("Redirections:");
-				print_redirects(ast->redir_list);
-				printf("\n");
-			}
-            break;
-    }
+static void	read_command(t_shell *shell)
+{
+	shell->prompt = get_prompt(shell->envp_list);
+	if (!shell->prompt)
+	{
+		perror("get_prompt (from build_prompt) failed");
+		flush_shell(shell);
+		exit(EXIT_FAILURE);
+	}
+	shell->command = readline(shell->prompt);
+	if (!shell->command)
+	{
+		printf("exit\n");
+		flush_shell(shell);
+		ft_lstclear(&shell->envp_list, free_envp);
+		exit(EXIT_SUCCESS);
+	}
+	if (*(shell->command))
+		add_history(shell->command);
 }
 
 void	minishell(char **envp)
 {
 	t_shell	shell;
 
-	(void)envp;
-	init_shell(&shell);
-	setup_signal_handlers();
+	init_shell(&shell, envp);
 	while (true)
 	{
 		read_command(&shell);
@@ -134,6 +86,6 @@ void	minishell(char **envp)
 			printf("minishell: syntax error\n");
 		else
 			parser(&shell);
-		flush(&shell);
+		flush_shell(&shell);
 	}
 }
