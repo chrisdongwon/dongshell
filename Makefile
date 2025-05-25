@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/05/25 23:45:30 by cwon             ###   ########.fr        #
+#    Updated: 2025/05/25 23:53:21 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,9 +52,6 @@ $(NAME): $(LIBFT) $(OBJ) $(HEADER)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT) $(LDFLAGS)
 
 bonus: all
-
-$(BONUS_EXEC): $(LIBFT) $(OBJ) $(BONUS_OBJ) $(HEADER) $(BONUS_HEADER)
-	$(CC) $(CFLAGS) $(OBJ) $(BONUS_OBJ) -o $(BONUS_EXEC) $(LIBFT)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
