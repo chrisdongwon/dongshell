@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/03 16:52:39 by cwon              #+#    #+#              #
-#    Updated: 2025/05/11 00:10:39 by cwon             ###   ########.fr        #
+#    Updated: 2025/05/28 11:51:06 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,6 +69,7 @@ SRC = \
 	ft_strlen.c \
 	ft_strmapi.c \
 	ft_strncmp.c \
+	ft_strncpy.c \
 	ft_strndup.c \
 	ft_strnlen.c \
 	ft_strnstr.c \

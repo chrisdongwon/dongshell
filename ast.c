@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:08:45 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/22 15:22:58 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/03 00:09:09 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_ast	*new_ast(t_ast *left, t_ast *right, t_ast_type type)
 	result = malloc(sizeof(t_ast));
 	if (!result)
 	{
-		perror("malloc (from parse) failed");
 		free_ast(left);
 		free_ast(right);
 		return (0);

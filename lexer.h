@@ -6,14 +6,12 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:09:16 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/13 20:00:26 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/02 16:56:39 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
-
-# include <stdio.h>
 
 # include "libft/libft.h"
 
@@ -39,8 +37,8 @@ enum e_token_type
 
 struct s_lexer
 {
-	bool		success;
-	t_string	str;
+	t_list		*token_list;
+	t_string	*str;
 };
 
 struct s_token
@@ -50,19 +48,19 @@ struct s_token
 	t_token_type	type;
 };
 
-// lexer_util.c
-bool			close_quotes(const char **s);
-bool			open_quotes(const char **s, char *quote);
-size_t			match_operator(const char *s, char *buffer);
-t_token_type	get_token_type(const char *op);
+// lexer_operator.c
+t_token			*handle_operator(const char **input, const char *s);
 
-// lexer.c
-t_token			*get_next_token(t_lexer *lexer, const char **input);
-
-// token.c
-bool			add_token(t_list **lst, t_token *token);
+// lexer_token_util.c
+bool			add_token(t_list **list, t_token *token);
+bool			append_new_token(t_list **list, const char *value, \
+t_token_type type, const char quote);
 t_token			*new_token(const char *start, size_t len, t_token_type type, \
 char quote);
+t_token_type	get_token_type(const char *op);
 void			free_token(void *arg);
+
+// lexer_token.c
+t_token			*get_next_token(t_lexer *lexer, const char **input);
 
 #endif

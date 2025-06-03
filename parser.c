@@ -5,90 +5,69 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 23:05:07 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/25 23:51:50 by cwon             ###   ########.fr       */
+/*   Created: 2025/06/02 19:59:08 by cwon              #+#    #+#             */
+/*   Updated: 2025/06/03 15:00:21 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
-static t_ast	*new_conditional_ast(t_parser *parser, t_ast *left, \
-t_ast_type type)
+bool	parser(t_shell *shell)
 {
-	t_ast	*right;
-
-	right = parse_pipeline(parser);
-	if (!right)
+	init_parser(shell);
+	shell->parser->ast = parse(shell);
+	if (shell->parser->syntax_error)
 	{
-		parser->syntax_error = true;
-		free_ast(left);
-		return (0);
+		shell->last_exit_status = 1;
+		return (false);
 	}
-	return (new_ast(left, right, type));
+	return (true);
 }
 
-static t_ast	*new_pipeline_ast(t_parser *parser, t_ast *left)
-{
-	t_ast	*right;
-
-	advance(parser);
-	right = parse_command(parser);
-	if (!right)
-	{
-		parser->syntax_error = true;
-		free_ast(left);
-		return (0);
-	}
-	return (new_ast(left, right, AST_PIPE));
-}
-
-t_ast	*parse_pipeline(t_parser *parser)
-{
-	t_ast	*ast;
-	t_ast	*left;
-
-	if (parser->syntax_error || parser->system_error)
-		return (0);
-	left = parse_command(parser);
-	if (!left)
-		return (0);
-	while (match(parser, TOKEN_PIPE))
-	{
-		ast = new_pipeline_ast(parser, left);
-		if (!ast)
-		{
-			parser->system_error = true;
-			return (0);
-		}
-		left = ast;
-	}
-	return (left);
-}
-
-t_ast	*parse(t_parser *parser)
+t_ast	*parse(t_shell *shell)
 {
 	t_ast		*ast;
 	t_ast		*left;
+	t_ast		*right;
 	t_ast_type	type;
+	t_parser	*parser;
 
-	if (parser->syntax_error || parser->syntax_error)
+	parser = shell->parser;
+	if (parser->syntax_error)
 		return (0);
-	left = parse_pipeline(parser);
-	if (!left)
-		return (0);
-	while (match(parser, TOKEN_AND) || match(parser, TOKEN_OR))
+	left = parse_pipeline(shell);
+	while (peek(parser) && \
+(peek(parser)->type == TOKEN_AND || peek(parser)->type == TOKEN_OR))
 	{
 		type = AST_AND;
-		if (current_token(parser)->type == TOKEN_OR)
+		if (peek(parser)->type == TOKEN_OR)
 			type = AST_OR;
 		advance(parser);
-		ast = new_conditional_ast(parser, left, type);
+		right = parse_pipeline(shell);
+		ast = new_ast(left, right, type);
 		if (!ast)
-		{
-			parser->system_error = true;
-			return (0);
-		}
+			error_exit(shell, "new_ast");
 		left = ast;
 	}
 	return (left);
+}
+
+void	flush_parser(t_shell *shell)
+{
+	if (!shell->parser)
+		return ;
+	free_ast(shell->parser->ast);
+	shell->parser->ast = 0;
+	free(shell->parser);
+	shell->parser = 0;
+}
+
+void	init_parser(t_shell *shell)
+{
+	shell->parser = malloc(sizeof(t_parser));
+	if (!shell->parser)
+		error_exit(shell, "malloc");
+	shell->parser->syntax_error = false;
+	shell->parser->ast = 0;
+	shell->parser->token_list = shell->lexer->token_list;
 }

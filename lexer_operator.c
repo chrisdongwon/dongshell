@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_util.c                                       :+:      :+:    :+:   */
+/*   lexer_operator.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 16:09:35 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/13 20:00:55 by cwon             ###   ########.fr       */
+/*   Created: 2025/06/02 15:53:07 by cwon              #+#    #+#             */
+/*   Updated: 2025/06/02 16:34:42 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-bool	close_quotes(const char **s)
-{
-	(*s)++;
-	return (false);
-}
-
-bool	open_quotes(const char **s, char *quote)
-{
-	*quote = **s;
-	(*s)++;
-	return (true);
-}
-
-static void	init_ops(char **ops)
+static void	init_operators(char **ops)
 {
 	ops[0] = "<<";
 	ops[1] = ">>";
@@ -39,13 +26,13 @@ static void	init_ops(char **ops)
 	ops[9] = 0;
 }
 
-size_t	match_operator(const char *s, char *buffer)
+static size_t	match_operator(const char *s, char *buffer)
 {
 	char	*ops[10];
 	size_t	i;
 	size_t	len;
 
-	init_ops(ops);
+	init_operators(ops);
 	i = 0;
 	while (ops[i])
 	{
@@ -61,25 +48,15 @@ size_t	match_operator(const char *s, char *buffer)
 	return (0);
 }
 
-t_token_type	get_token_type(const char *op)
+t_token	*handle_operator(const char **input, const char *s)
 {
-	if (!ft_strncmp(op, "&&", 3))
-		return (TOKEN_AND);
-	if (!ft_strncmp(op, ">>", 3))
-		return (TOKEN_APPEND);
-	if (!ft_strncmp(op, "<<", 3))
-		return (TOKEN_HEREDOC);
-	if (!ft_strncmp(op, "||", 3))
-		return (TOKEN_OR);
-	if (!ft_strncmp(op, ")", 1))
-		return (TOKEN_PAREN_CLOSE);
-	if (!ft_strncmp(op, "(", 1))
-		return (TOKEN_PAREN_OPEN);
-	if (!ft_strncmp(op, "|", 2))
-		return (TOKEN_PIPE);
-	if (!ft_strncmp(op, "<", 2))
-		return (TOKEN_REDIR_IN);
-	if (!ft_strncmp(op, ">", 2))
-		return (TOKEN_REDIR_OUT);
-	return (TOKEN_ERROR);
+	char		buffer[3];
+	size_t		len;
+
+	ft_bzero(buffer, 3);
+	len = match_operator(s, buffer);
+	if (!len)
+		return (new_token("Unknown operator", 16, TOKEN_ERROR, 0));
+	*input = s + len;
+	return (new_token(buffer, len, get_token_type(buffer), 0));
 }

@@ -5,37 +5,36 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 21:32:40 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/25 23:17:44 by cwon             ###   ########.fr       */
+/*   Created: 2025/06/02 14:11:54 by cwon              #+#    #+#             */
+/*   Updated: 2025/06/02 15:16:08 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*build_prompt(char *username, char *hostname, char *cwd)
+static char	*build_prompt(t_shell *shell, char *user, char *host, char *cwd)
 {
 	char	*result;
 	size_t	len;
 
-	len = ft_strlen(username) + ft_strlen(hostname) + ft_strlen(cwd) + 5;
+	len = ft_strlen(user) + ft_strlen(host) + ft_strlen(cwd) + 5;
 	result = malloc(len);
 	if (!result)
 	{
-		perror("malloc (from build_prompt) failed");
-		free(username);
-		free(hostname);
+		free(user);
+		free(host);
 		free(cwd);
-		return (0);
+		error_exit(shell, "malloc");
 	}
 	result[0] = 0;
-	ft_strlcat(result, username, len);
+	ft_strlcat(result, user, len);
 	ft_strlcat(result, "@", len);
-	ft_strlcat(result, hostname, len);
+	ft_strlcat(result, host, len);
 	ft_strlcat(result, ":", len);
 	ft_strlcat(result, cwd, len);
 	ft_strlcat(result, "$ ", len);
-	free(username);
-	free(hostname);
+	free(user);
+	free(host);
 	free(cwd);
 	return (result);
 }
@@ -75,16 +74,44 @@ static char	*get_username(t_list *envp_list)
 	return (ft_strdup("unknown_user"));
 }
 
-char	*get_prompt(t_list *envp_list)
+static char	*get_prompt(t_shell *shell)
 {
 	char	*cwd;
 	char	*hostname;
 	char	*username;
 
-	username = get_username(envp_list);
-	hostname = get_hostname(envp_list);
+	username = get_username(shell->envp_list);
+	if (!username)
+		error_exit(shell, "ft_strdup");
+	hostname = get_hostname(shell->envp_list);
+	if (!hostname)
+	{
+		free(username);
+		error_exit(shell, "ft_strdup");
+	}
 	cwd = getcwd(0, 0);
 	if (!cwd)
 		cwd = ft_strdup("?");
-	return (build_prompt(username, hostname, cwd));
+	if (!cwd)
+	{
+		free(username);
+		free(hostname);
+		error_exit(shell, "ft_strdup");
+	}
+	return (build_prompt(shell, username, hostname, cwd));
+}
+
+void	read_command(t_shell *shell)
+{
+	shell->prompt = get_prompt(shell);
+	shell->command = readline(shell->prompt);
+	if (!shell->command)
+	{
+		printf("exit\n");
+		flush_shell(shell);
+		ft_lstclear(&shell->envp_list, free_envp);
+		exit(EXIT_SUCCESS);
+	}
+	if (*(shell->command))
+		add_history(shell->command);
 }

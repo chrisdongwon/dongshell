@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   lexer_token_util.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 00:18:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/20 22:04:17 by cwon             ###   ########.fr       */
+/*   Created: 2025/06/02 15:30:23 by cwon              #+#    #+#             */
+/*   Updated: 2025/06/02 16:34:30 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-bool	add_token(t_list **lst, t_token *token)
+bool	add_token(t_list **list, t_token *token)
 {
 	t_list	*node;
 
 	node = ft_lstnew(token);
 	if (!node)
-	{
-		perror("ft_lstnew (from add_token) failed");
 		return (false);
-	}
-	ft_lstadd_back(lst, node);
+	ft_lstadd_back(list, node);
 	return (true);
+}
+
+bool	append_new_token(t_list **list, const char *value, t_token_type type, \
+const char quote)
+{
+	t_token	*token;
+
+	token = new_token(value, ft_strlen(value), type, quote);
+	return (token && add_token(list, token));
 }
 
 t_token	*new_token(const char *start, size_t len, t_token_type type, char quote)
@@ -32,17 +38,13 @@ t_token	*new_token(const char *start, size_t len, t_token_type type, char quote)
 
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
-	{
-		perror("malloc (from new_token) failed");
 		return (0);
-	}
 	token->value = 0;
 	if (start)
 	{
 		token->value = ft_strndup(start, len);
 		if (!token->value)
 		{
-			perror("ft_strdup (from new_token) failed");
 			free(token);
 			return (0);
 		}
@@ -50,6 +52,29 @@ t_token	*new_token(const char *start, size_t len, t_token_type type, char quote)
 	token->quote = quote;
 	token->type = type;
 	return (token);
+}
+
+t_token_type	get_token_type(const char *op)
+{
+	if (!ft_strncmp(op, "&&", 3))
+		return (TOKEN_AND);
+	if (!ft_strncmp(op, ">>", 3))
+		return (TOKEN_APPEND);
+	if (!ft_strncmp(op, "<<", 3))
+		return (TOKEN_HEREDOC);
+	if (!ft_strncmp(op, "||", 3))
+		return (TOKEN_OR);
+	if (!ft_strncmp(op, ")", 1))
+		return (TOKEN_PAREN_CLOSE);
+	if (!ft_strncmp(op, "(", 1))
+		return (TOKEN_PAREN_OPEN);
+	if (!ft_strncmp(op, "|", 2))
+		return (TOKEN_PIPE);
+	if (!ft_strncmp(op, "<", 2))
+		return (TOKEN_REDIR_IN);
+	if (!ft_strncmp(op, ">", 2))
+		return (TOKEN_REDIR_OUT);
+	return (TOKEN_ERROR);
 }
 
 void	free_token(void *arg)

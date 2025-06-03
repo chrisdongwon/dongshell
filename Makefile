@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/05/25 23:53:21 by cwon             ###   ########.fr        #
+#    Updated: 2025/06/03 14:34:03 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,21 +28,18 @@ HEADER = \
 	signal_handler.h
 SRC = \
 	ast.c \
-	envp_util.c \
-	envp.c \
-	flush.c \
-	init.c \
-	lexer_util.c \
+	envp_list.c \
+	lexer_operator.c \
+	lexer_token_util.c \
+	lexer_token.c \
 	lexer.c \
+	minishell_util.c \
 	minishell.c \
-	parser_command.c \
-	parser_redir.c \
-	parser_subshell.c \
+	parser_pipeline.c \
 	parser_util.c \
 	parser.c \
 	prompt.c \
-	signal_handler.c \
-	token.c
+	signal_handler.c
 MAIN = main.c
 OBJ = $(SRC:.c=.o) $(MAIN:.c=.o)
 

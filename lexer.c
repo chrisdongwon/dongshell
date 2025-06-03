@@ -5,75 +5,77 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 16:35:32 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/22 15:03:36 by cwon             ###   ########.fr       */
+/*   Created: 2025/06/02 15:12:08 by cwon              #+#    #+#             */
+/*   Updated: 2025/06/03 14:59:50 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
-static t_token	*handle_end(const char **input, const char *s)
+static void	append_token_to_lexer(t_shell *shell, t_token **token, \
+const char **ptr)
 {
-	*input = s;
-	return (new_token("", 0, TOKEN_END, 0));
-}
-
-static t_token	*handle_end_op(const char **input, const char *s)
-{
-	(*input) = s + 1;
-	return (new_token(s, 1, TOKEN_ERROR, 0));
-}
-
-static t_token	*handle_op(const char **input, const char *s)
-{
-	char		buffer[3];
-	size_t		len;
-
-	ft_bzero(buffer, 3);
-	len = match_operator(s, buffer);
-	if (!len)
-		return (new_token("Unknown operator", 16, TOKEN_ERROR, 0));
-	*input = s + len;
-	return (new_token(buffer, len, get_token_type(buffer), 0));
-}
-
-static t_token	*tokenize(t_lexer *lexer, const char **input, const char *s)
-{
-	bool	open_quote;
-	char	quote;
-
-	quote = 0;
-	open_quote = false;
-	while (*s)
+	while ((*token)->type != TOKEN_END && (*token)->type != TOKEN_ERROR)
 	{
-		if (!open_quote && \
-(ft_isspace(*s) || ft_strchr("<>|&()", *s) || *s == ';' || *s == '\\'))
-			break ;
-		if (!open_quote && (*s == '\'' || *s == '"'))
-			open_quote = open_quotes(&s, &quote);
-		else if (open_quote && *s == quote)
-			open_quote = close_quotes(&s);
-		else if (!append_char(&lexer->str, *s++))
-			return (0);
+		if (!add_token(&shell->lexer->token_list, *token))
+		{
+			free_token(*token);
+			error_exit(shell, "add_token");
+		}
+		free_string(shell->lexer->str);
+		if (!init_string(shell->lexer->str))
+			error_exit(shell, "init_string");
+		*token = get_next_token(shell->lexer, ptr);
+		if (!(*token))
+			error_exit(shell, "get_next_token");
 	}
-	*input = s;
-	if (open_quote)
-		return (new_token("Unclosed quote", 14, TOKEN_ERROR, 0));
-	return (new_token(lexer->str.buffer, lexer->str.size, TOKEN_WORD, quote));
 }
 
-t_token	*get_next_token(t_lexer *lexer, const char **input)
+bool	lexer(t_shell *shell)
 {
-	const char	*s;
+	bool		result;
+	const char	*ptr;
+	t_token		*token;
 
-	s = *input;
-	while (ft_isspace(*s))
-		s++;
-	if (!*s)
-		return (handle_end(input, s));
-	if (*s == ';' || *s == '\\')
-		return (handle_end_op(input, s));
-	if (ft_strchr("<>|&()", *s))
-		return (handle_op(input, s));
-	return (tokenize(lexer, input, s));
+	result = true;
+	init_lexer(shell);
+	ptr = shell->command;
+	token = get_next_token(shell->lexer, &ptr);
+	if (!token)
+		error_exit(shell, "get_next_token");
+	while (token->type != TOKEN_END && token->type != TOKEN_ERROR)
+		append_token_to_lexer(shell, &token, &ptr);
+	if (token->type == TOKEN_ERROR)
+	{
+		result = false;
+		shell->last_exit_status = 1;
+	}
+	free_token(token);
+	return (result);
+}
+
+void	flush_lexer(t_shell *shell)
+{
+	if (!shell->lexer)
+		return ;
+	if (shell->lexer->token_list)
+		ft_lstclear(&shell->lexer->token_list, free_token);
+	if (shell->lexer->str)
+		free_string(shell->lexer->str);
+	free(shell->lexer->str);
+	free(shell->lexer);
+	shell->lexer = 0;
+}
+
+void	init_lexer(t_shell *shell)
+{
+	shell->lexer = malloc(sizeof(t_lexer));
+	if (!shell->lexer)
+		error_exit(shell, "malloc");
+	shell->lexer->token_list = 0;
+	shell->lexer->str = malloc(sizeof(t_string));
+	if (!shell->lexer->str)
+		error_exit(shell, "malloc");
+	if (!init_string(shell->lexer->str))
+		error_exit(shell, "init_string");
 }
