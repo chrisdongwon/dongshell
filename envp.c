@@ -6,11 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:43:44 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/02 13:05:03 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/24 17:30:58 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "envp.h"
 
 char	*get_env_value(t_list *envp_list, const char *key)
 {

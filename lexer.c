@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:12:08 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/03 14:59:50 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/19 12:55:00 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,19 @@ const char **ptr)
 		if (!(*token))
 			error_exit(shell, "get_next_token");
 	}
+}
+
+static void	init_lexer(t_shell *shell)
+{
+	shell->lexer = malloc(sizeof(t_lexer));
+	if (!shell->lexer)
+		error_exit(shell, "malloc");
+	shell->lexer->token_list = 0;
+	shell->lexer->str = malloc(sizeof(t_string));
+	if (!shell->lexer->str)
+		error_exit(shell, "malloc");
+	if (!init_string(shell->lexer->str))
+		error_exit(shell, "init_string");
 }
 
 bool	lexer(t_shell *shell)
@@ -65,17 +78,4 @@ void	flush_lexer(t_shell *shell)
 	free(shell->lexer->str);
 	free(shell->lexer);
 	shell->lexer = 0;
-}
-
-void	init_lexer(t_shell *shell)
-{
-	shell->lexer = malloc(sizeof(t_lexer));
-	if (!shell->lexer)
-		error_exit(shell, "malloc");
-	shell->lexer->token_list = 0;
-	shell->lexer->str = malloc(sizeof(t_string));
-	if (!shell->lexer->str)
-		error_exit(shell, "malloc");
-	if (!init_string(shell->lexer->str))
-		error_exit(shell, "init_string");
 }

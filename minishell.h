@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:30:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/03 14:32:37 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/26 12:03:00 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # include "envp.h"
 # include "lexer.h"
-# include "parser.h"
+# include "expander.h"
 # include "signal_handler.h"
 
 typedef struct s_shell	t_shell;
@@ -28,17 +28,28 @@ struct s_shell
 	char		*command;
 	char		*prompt;
 	int			last_exit_status;
+	t_expander	*expander;
 	t_lexer		*lexer;
 	t_list		*envp_list;
 	t_parser	*parser;
 };
 
+// expander_split.c
+void	expand_split(t_shell *shell, t_list **head, t_list **node);
+
+// expander_var.c
+void	expand_variable(t_shell *shell, t_token *token);
+
+// expander.c
+bool	expander(t_shell *shell);
+void	flush_expander(t_shell *shell);
+
 // lexer.c
 bool	lexer(t_shell *shell);
 void	flush_lexer(t_shell *shell);
-void	init_lexer(t_shell *shell);
 
 // minishell_util.c
+char	*get_ifs(t_list *envp_list);
 void	init_envp(t_shell *shell, char **envp);
 
 // minishell.c
@@ -53,9 +64,11 @@ t_ast	*parse_pipeline(t_shell *shell);
 bool	parser(t_shell *shell);
 t_ast	*parse(t_shell *shell);
 void	flush_parser(t_shell *shell);
-void	init_parser(t_shell *shell);
 
 // prompt.c
 void	read_command(t_shell *shell);
+
+// print utils
+void	print_token(void *arg);
 
 #endif

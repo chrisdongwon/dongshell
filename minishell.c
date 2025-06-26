@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 00:17:46 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/03 15:00:30 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/25 20:45:56 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	init_shell(t_shell *shell, char **envp)
 	shell->prompt = 0;
 	shell->last_exit_status = 0;
 	shell->envp_list = 0;
+	shell->expander = 0;
 	shell->lexer = 0;
 	shell->parser = 0;
 	init_envp(shell, envp);
@@ -40,6 +41,8 @@ void	flush_shell(t_shell *shell)
 	free(shell->prompt);
 	flush_lexer(shell);
 	flush_parser(shell);
+	free(shell->expander);
+	shell->expander = 0;
 }
 
 // delete after testing
@@ -112,7 +115,10 @@ void	minishell(char **envp)
 		if (lexer(&shell) && parser(&shell))
 		{
 			if (expander(&shell))
-				printf("continue with command execution\n");
+			{
+				printf("expander success\n");
+				print_ast(shell.expander->ast, 0);
+			}
 			else
 				printf("minishell: bad substitution\n");
 		}

@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   expander_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/06 08:52:00 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/25 20:54:10 by cwon             ###   ########.fr       */
+/*   Created: 2025/06/25 13:42:54 by cwon              #+#    #+#             */
+/*   Updated: 2025/06/25 13:43:59 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "expander.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+bool	ifs_delim(char c, const char *ifs)
 {
-	t_list	*last;
-
-	if (!lst || !new)
-		return ;
-	if (!(*lst))
-		*lst = new;
-	else
+	while (*ifs)
 	{
-		last = ft_lstlast(*lst);
-		last->next = new;
-		new->prev = last;
+		if (*ifs == c && !ft_isspace(*ifs))
+			return (true);
+		ifs++;
 	}
+	return (false);
+}
+
+bool	ifs_whitespace(char c, const char *ifs)
+{
+	while (*ifs)
+	{
+		if (*ifs == c && (*ifs == ' ' || *ifs == '\t' || *ifs == '\n'))
+			return (true);
+		ifs++;
+	}
+	return (false);
 }

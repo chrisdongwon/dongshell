@@ -6,11 +6,21 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 19:59:08 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/03 15:00:21 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/04 13:21:54 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	init_parser(t_shell *shell)
+{
+	shell->parser = malloc(sizeof(t_parser));
+	if (!shell->parser)
+		error_exit(shell, "malloc");
+	shell->parser->syntax_error = false;
+	shell->parser->ast = 0;
+	shell->parser->token_list = shell->lexer->token_list;
+}
 
 bool	parser(t_shell *shell)
 {
@@ -60,14 +70,4 @@ void	flush_parser(t_shell *shell)
 	shell->parser->ast = 0;
 	free(shell->parser);
 	shell->parser = 0;
-}
-
-void	init_parser(t_shell *shell)
-{
-	shell->parser = malloc(sizeof(t_parser));
-	if (!shell->parser)
-		error_exit(shell, "malloc");
-	shell->parser->syntax_error = false;
-	shell->parser->ast = 0;
-	shell->parser->token_list = shell->lexer->token_list;
 }

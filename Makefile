@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/06/03 14:34:03 by cwon             ###   ########.fr        #
+#    Updated: 2025/06/25 13:44:56 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,18 +22,23 @@ LIBFT = $(LIBFT_DIR)/libft.a
 HEADER = \
 	ast.h \
 	envp.h \
+	expander.h \
 	lexer.h \
 	minishell.h \
 	parser.h \
 	signal_handler.h
 SRC = \
 	ast.c \
-	envp_list.c \
+	envp.c \
+	expander_split.c \
+	expander_util.c \
+	expander_var.c \
+	expander.c \
 	lexer_operator.c \
 	lexer_token_util.c \
 	lexer_token.c \
 	lexer.c \
-	minishell_util.c \
+	minishell_envp.c \
 	minishell.c \
 	parser_pipeline.c \
 	parser_util.c \

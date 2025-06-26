@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/06 08:52:00 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/25 20:54:10 by cwon             ###   ########.fr       */
+/*   Created: 2025/06/04 11:48:49 by cwon              #+#    #+#             */
+/*   Updated: 2025/06/25 13:44:43 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef EXPANDER_H
+# define EXPANDER_H
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+# include "parser.h"
+
+typedef struct s_expander	t_expander;
+
+struct s_expander
 {
-	t_list	*last;
+	bool		sub_error;
+	const char	*ifs;
+	int			last_exit_status;
+	t_ast		*ast;
+	t_list		*envp_list;
+};
 
-	if (!lst || !new)
-		return ;
-	if (!(*lst))
-		*lst = new;
-	else
-	{
-		last = ft_lstlast(*lst);
-		last->next = new;
-		new->prev = last;
-	}
-}
+// expander_util.c
+bool	ifs_delim(char c, const char *ifs);
+bool	ifs_whitespace(char c, const char *ifs);
+
+#endif
