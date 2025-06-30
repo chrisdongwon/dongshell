@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:56:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/26 12:49:45 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/26 14:36:11 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,50 @@ static void	reassign_head(t_list **head, t_list *new_list, t_list *next)
 		*head = next;
 }
 
-static t_list	*replace_node(t_list **head, t_list *node, t_list *new_list)
+static void	add_word(t_shell *shell, t_list **list, char *start, size_t len)
+{
+	bool	result;
+	char	*value;
+
+	value = ft_strndup(start, len);
+	if (!value)
+		error_exit(shell, "ft_strndup");
+	result = append_new_token(list, value, TOKEN_WORD, 0);
+	free(value);
+	if (!result)
+	{
+		ft_lstclear(list, free_token);
+		error_exit(shell, "append_new_token");
+	}
+}
+
+static t_list	*split_by_ifs(t_shell *shell, char *str, const char *ifs)
+{
+	char	*start;
+	t_list	*node;
+
+	node = 0;
+	while (*str)
+	{
+		while (*str && ifs_whitespace(*str, ifs))
+			str++;
+		if (*str && ifs_delim(*str, ifs))
+		{
+			add_word(shell, &node, str++, 0);
+			continue ;
+		}
+		start = str;
+		while (*str && !ifs_whitespace(*str, ifs) && !ifs_delim(*str, ifs))
+			str++;
+		if (str > start)
+			add_word(shell, &node, start, str - start);
+		if (*str && ifs_delim(*str, ifs))
+			str++;
+	}
+	return (node);
+}
+
+t_list	*replace_node(t_list **head, t_list *node, t_list *new_list)
 {
 	t_list	*new_tail;
 	t_list	*next;
@@ -45,49 +88,6 @@ static t_list	*replace_node(t_list **head, t_list *node, t_list *new_list)
 	if (!new_tail)
 		return (prev);
 	return (new_tail);
-}
-
-static void	add_word(t_shell *shell, t_list **list, char *start, size_t len)
-{
-	bool	result;
-	char	*value;
-
-	value = ft_strndup(start, len);
-	if (!value)
-		error_exit(shell, "ft_strndup");
-	result = append_new_token(list, value, TOKEN_WORD, 0);
-	free(value);
-	if (!result)
-	{
-		ft_lstclear(list, free_token);
-		error_exit(shell, "append_new_token");
-	}
-}
-
-t_list	*split_by_ifs(t_shell *shell, char *str, const char *ifs)
-{
-	char	*start;
-	t_list	*node;
-
-	node = 0;
-	while (*str)
-	{
-		while (*str && ifs_whitespace(*str, ifs))
-			str++;
-		if (*str && ifs_delim(*str, ifs))
-		{
-			add_word(shell, &node, str++, 0);
-			continue ;
-		}
-		start = str;
-		while (*str && !ifs_whitespace(*str, ifs) && !ifs_delim(*str, ifs))
-			str++;
-		if (str > start)
-			add_word(shell, &node, start, str - start);
-		if (*str && ifs_delim(*str, ifs))
-			str++;
-	}
-	return (node);
 }
 
 void	expand_split(t_shell *shell, t_list **head, t_list **node)

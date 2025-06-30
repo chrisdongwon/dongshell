@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:38:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/26 12:41:32 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/28 17:36:13 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void	expand_list(t_shell *shell, t_list **list, bool is_argv)
 		}
 		node = node->next;
 	}
+	if (!shell->expander->sub_error)
+		expand_wildcard(shell, list);
 }
 
 static void	expand_ast(t_shell *shell, t_ast *ast)

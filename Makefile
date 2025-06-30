@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/06/25 13:44:56 by cwon             ###   ########.fr        #
+#    Updated: 2025/06/28 17:30:37 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,11 @@ HEADER = \
 SRC = \
 	ast.c \
 	envp.c \
+	expander_sort.c \
 	expander_split.c \
 	expander_util.c \
 	expander_var.c \
+	expander_wildcard.c \
 	expander.c \
 	lexer_operator.c \
 	lexer_token_util.c \

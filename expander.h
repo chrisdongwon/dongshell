@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:48:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/25 13:44:43 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/28 17:32:02 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ struct s_expander
 	t_ast		*ast;
 	t_list		*envp_list;
 };
+
+// expander_sort.c
+t_list	*merge_nodes(t_list *a, t_list *b);
+t_list	*merge(t_list *front, t_list *back);
+t_list	*mergesort(t_list *list);
 
 // expander_util.c
 bool	ifs_delim(char c, const char *ifs);

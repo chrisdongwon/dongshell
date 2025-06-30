@@ -6,13 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:30:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/26 12:03:00 by cwon             ###   ########.fr       */
+/*   Updated: 2025/06/27 08:13:21 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <dirent.h>
 # include <fcntl.h>
 # include <readline/history.h>
 
@@ -21,6 +22,7 @@
 # include "expander.h"
 # include "signal_handler.h"
 
+typedef struct dirent	t_dirent;
 typedef struct s_shell	t_shell;
 
 struct s_shell
@@ -35,10 +37,14 @@ struct s_shell
 };
 
 // expander_split.c
+t_list	*replace_node(t_list **head, t_list *node, t_list *new_list);
 void	expand_split(t_shell *shell, t_list **head, t_list **node);
 
 // expander_var.c
 void	expand_variable(t_shell *shell, t_token *token);
+
+// expander_wildcard.c
+void	expand_wildcard(t_shell *shell, t_list **list);
 
 // expander.c
 bool	expander(t_shell *shell);
