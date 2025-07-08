@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 19:59:08 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/04 13:21:54 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/04 08:42:09 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	init_parser(t_shell *shell)
 {
 	shell->parser = malloc(sizeof(t_parser));
 	if (!shell->parser)
-		error_exit(shell, "malloc");
+		flush_and_exit(shell, "malloc", EXIT_FAILURE);
 	shell->parser->syntax_error = false;
 	shell->parser->ast = 0;
 	shell->parser->token_list = shell->lexer->token_list;
@@ -56,7 +56,7 @@ t_ast	*parse(t_shell *shell)
 		right = parse_pipeline(shell);
 		ast = new_ast(left, right, type);
 		if (!ast)
-			error_exit(shell, "new_ast");
+			flush_and_exit(shell, "new_ast", EXIT_FAILURE);
 		left = ast;
 	}
 	return (left);

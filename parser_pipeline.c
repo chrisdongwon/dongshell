@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:51 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/03 14:39:28 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/04 13:53:21 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	set_argv_list(t_shell *shell, t_ast *ast)
 		value = token->value;
 		if (!append_new_token(&ast->argv_list, value, token->type, \
 token->quote))
-			error_exit(shell, "append_new_token");
+			flush_and_exit(shell, "append_new_token", EXIT_FAILURE);
 		advance(parser);
 	}
 }
@@ -51,7 +51,7 @@ static bool	set_redir_list(t_shell *shell, t_ast *ast)
 		token = peek(parser);
 		value = token->value;
 		if (!append_new_token(&ast->redir_list, value, type, token->quote))
-			error_exit(shell, "append_new_token");
+			flush_and_exit(shell, "append_new_token", EXIT_FAILURE);
 		advance(parser);
 	}
 	return (true);
@@ -74,7 +74,7 @@ static t_ast	*parse_subshell(t_shell *shell)
 	}
 	ast = new_ast(subshell, 0, AST_SUBSHELL);
 	if (!ast)
-		error_exit(shell, "new_ast");
+		flush_and_exit(shell, "new_ast", EXIT_FAILURE);
 	return (ast);
 }
 
@@ -88,7 +88,7 @@ static t_ast	*parse_command(t_shell *shell)
 		return (parse_subshell(shell));
 	ast = ft_calloc(1, sizeof(t_ast));
 	if (!ast)
-		error_exit(shell, "ft_calloc");
+		flush_and_exit(shell, "ft_calloc", EXIT_FAILURE);
 	ast->type = AST_COMMAND;
 	set_argv_list(shell, ast);
 	if (!set_redir_list(shell, ast))
@@ -112,7 +112,7 @@ t_ast	*parse_pipeline(t_shell *shell)
 		right = parse_command(shell);
 		ast = new_ast(left, right, AST_PIPE);
 		if (!ast)
-			error_exit(shell, "new_ast");
+			flush_and_exit(shell, "new_ast", EXIT_FAILURE);
 		left = ast;
 	}
 	return (left);

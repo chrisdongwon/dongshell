@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:38:21 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/28 17:40:08 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/07 20:36:03 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static DIR	*open_directory_or_exit(t_shell *shell)
 
 	dir = opendir(".");
 	if (!dir)
-		error_exit(shell, "wildcard: opendir");
+		flush_and_exit(shell, "opendir", EXIT_FAILURE);
 	return (dir);
 }
 
@@ -51,7 +51,7 @@ const char *filename)
 	if (!append_new_token(matches, filename, TOKEN_WORD, 0))
 	{
 		ft_lstclear(matches, free_token);
-		error_exit(shell, "wildcard: append_new_token");
+		flush_and_exit(shell, "append_new_token", EXIT_FAILURE);
 	}
 }
 
@@ -77,7 +77,7 @@ static t_list	*expand_pattern(t_shell *shell, const char *pattern)
 	}
 	closedir(dir);
 	if (matches && matches->next)
-		matches = mergesort(matches);
+		matches = mergesort_token(matches);
 	return (matches);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:09:16 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/02 16:56:39 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/04 13:52:11 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 
 typedef enum e_token_type	t_token_type;
 typedef struct s_lexer		t_lexer;
+typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
+
+struct						s_shell;
 
 enum e_token_type
 {
@@ -62,5 +65,9 @@ void			free_token(void *arg);
 
 // lexer_token.c
 t_token			*get_next_token(t_lexer *lexer, const char **input);
+
+// lexer.c
+bool			lexer(t_shell *shell);
+void			flush_lexer(t_shell *shell);
 
 #endif

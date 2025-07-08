@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 00:17:46 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/25 20:45:56 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/04 08:24:37 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ static void	init_shell(t_shell *shell, char **envp)
 
 // exit(EXIT_FAILURE) eventually needs to be updated to indicate
 // the exit signal of the failed child process...?
-void	error_exit(t_shell *shell, const char *message)
+void	flush_and_exit(t_shell *shell, const char *error_msg, int exit_status)
 {
-	perror(message);
+	if (error_msg)
+		perror(error_msg);
 	flush_shell(shell);
 	ft_lstclear(&shell->envp_list, free_envp);
-	exit(EXIT_FAILURE);
+	exit(exit_status);
 }
 
 void	flush_shell(t_shell *shell)
@@ -43,65 +44,6 @@ void	flush_shell(t_shell *shell)
 	flush_parser(shell);
 	free(shell->expander);
 	shell->expander = 0;
-}
-
-// delete after testing
-void	print_token(void *arg)
-{
-	t_token *token;
-
-	token = (t_token *)arg;
-	printf(" %s", token->value);
-}
-
-// delete after testing
-const char *token_type_to_string(t_token_type type)
-{
-	switch (type)
-	{
-		case TOKEN_AND:         return "TOKEN_AND";
-		case TOKEN_APPEND:      return "TOKEN_APPEND";
-		case TOKEN_END:         return "TOKEN_END";
-		case TOKEN_ERROR:       return "TOKEN_ERROR";
-		case TOKEN_HEREDOC:     return "TOKEN_HEREDOC";
-		case TOKEN_OR:          return "TOKEN_OR";
-		case TOKEN_PAREN_CLOSE: return "TOKEN_PAREN_CLOSE";
-		case TOKEN_PAREN_OPEN:  return "TOKEN_PAREN_OPEN";
-		case TOKEN_PIPE:        return "TOKEN_PIPE";
-		case TOKEN_REDIR_IN:    return "TOKEN_REDIR_IN";
-		case TOKEN_REDIR_OUT:   return "TOKEN_REDIR_OUT";
-		case TOKEN_WORD:        return "TOKEN_WORD";
-		default:                return "UNKNOWN_TOKEN_TYPE";
-	}
-}
-
-// delete after testing
-void	print_ast(t_ast *ast, int indent)
-{
-	if (!ast)
-		return ;
-	for (int i = 0; i < indent; i++)
-		printf("  ");
-	switch (ast->type)
-	{
-		case AST_COMMAND:
-			printf("COMMAND:");
-			ft_lstiter(ast->argv_list, print_token);
-			printf("\n");
-			for (t_list *r = ast->redir_list; r; r = r->next)
-			{
-				t_token *redir = r->content;
-				for (int i = 0; i < indent + 1; i++) printf("  ");
-				printf("REDIR: %s -> %s\n", token_type_to_string(redir->type), redir->value);
-			}
-			break;
-		case AST_PIPE:     printf("PIPE\n"); break;
-		case AST_AND:      printf("AND\n"); break;
-		case AST_OR:       printf("OR\n"); break;
-		case AST_SUBSHELL: printf("GROUP\n"); break;
-	}
-	print_ast(ast->left, indent + 1);
-	print_ast(ast->right, indent + 1);
 }
 
 void	minishell(char **envp)
@@ -115,15 +57,12 @@ void	minishell(char **envp)
 		if (lexer(&shell) && parser(&shell))
 		{
 			if (expander(&shell))
-			{
-				printf("expander success\n");
-				print_ast(shell.expander->ast, 0);
-			}
+				shell.last_exit_status = exec_ast(&shell, shell.expander->ast);
 			else
-				printf("minishell: bad substitution\n");
+				ft_putstr_fd("minishell: bad substitution\n", STDERR_FILENO);
 		}
 		else
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 		flush_shell(&shell);
 	}
 }

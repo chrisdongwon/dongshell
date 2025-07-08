@@ -6,15 +6,18 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:48:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/28 17:32:02 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/07 21:04:00 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
+# include <dirent.h>
+
 # include "parser.h"
 
+typedef struct dirent		t_dirent;
 typedef struct s_expander	t_expander;
 
 struct s_expander
@@ -27,12 +30,26 @@ struct s_expander
 };
 
 // expander_sort.c
-t_list	*merge_nodes(t_list *a, t_list *b);
-t_list	*merge(t_list *front, t_list *back);
-t_list	*mergesort(t_list *list);
+t_list	*merge_token_nodes(t_list *a, t_list *b);
+t_list	*merge_token(t_list *front, t_list *back);
+t_list	*mergesort_token(t_list *list);
+
+// expander_split.c
+t_list	*replace_node(t_list **head, t_list *node, t_list *new_list);
+void	expand_split(t_shell *shell, t_list **head, t_list **node);
 
 // expander_util.c
 bool	ifs_delim(char c, const char *ifs);
 bool	ifs_whitespace(char c, const char *ifs);
+
+// expander_var.c
+void	expand_variable(t_shell *shell, t_token *token);
+
+// expander_wildcard.c
+void	expand_wildcard(t_shell *shell, t_list **list);
+
+// expander.c
+bool	expander(t_shell *shell);
+void	flush_expander(t_shell *shell);
 
 #endif

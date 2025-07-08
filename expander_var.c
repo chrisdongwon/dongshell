@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:15:09 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/24 18:04:17 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/07 08:23:08 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*extract_var(t_shell *shell, const char *str)
 		result = ft_strndup(str, i);
 	}
 	if (!result)
-		error_exit(shell, "ft_strndup");
+		flush_and_exit(shell, "ft_strndup", EXIT_FAILURE);
 	return (result);
 }
 
@@ -50,14 +50,14 @@ void	expand_variable(t_shell *shell, t_token *token)
 		free(token->value);
 		token->value = ft_itoa(shell->expander->last_exit_status);
 		if (!token->value)
-			error_exit(shell, "ft_itoa");
+			flush_and_exit(shell, "ft_itoa", EXIT_FAILURE);
 		return ;
 	}
 	var = extract_var(shell, token->value + 1);
 	if (shell->expander->sub_error)
 		return ;
 	free(token->value);
-	val = get_env_value(shell->expander->envp_list, var);
+	val = get_envp_value(shell->expander->envp_list, var);
 	if (!val)
 		token->value = ft_strdup("");
 	else

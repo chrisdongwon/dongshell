@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 23:53:47 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/03 12:38:03 by cwon             ###   ########.fr       */
+/*   Created: 2025/07/04 18:38:46 by cwon              #+#    #+#             */
+/*   Updated: 2025/07/04 18:43:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "executor.h"
 
-int	main(int argc, char **argv, char **envp)
+int	builtin_pwd(void)
 {
-	if (argc != 1)
+	char	cwd[PATH_MAX];
+
+	if (!getcwd(cwd, sizeof(cwd)))
 	{
-		ft_putstr_fd("usage: ", STDERR_FILENO);
-		ft_putstr_fd(argv[0], STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		perror("pwd");
+		return (1);
 	}
-	minishell(envp);
+	ft_putstr_fd(cwd, STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
 }

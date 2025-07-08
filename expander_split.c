@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:56:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/26 14:36:11 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/05 22:13:59 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ static void	add_word(t_shell *shell, t_list **list, char *start, size_t len)
 
 	value = ft_strndup(start, len);
 	if (!value)
-		error_exit(shell, "ft_strndup");
+		flush_and_exit(shell, "ft_strndup", EXIT_FAILURE);
 	result = append_new_token(list, value, TOKEN_WORD, 0);
 	free(value);
 	if (!result)
 	{
 		ft_lstclear(list, free_token);
-		error_exit(shell, "append_new_token");
+		flush_and_exit(shell, "append_new_token", EXIT_FAILURE);
 	}
 }
 
@@ -99,6 +99,10 @@ void	expand_split(t_shell *shell, t_list **head, t_list **node)
 	new_list = 0;
 	if (token->value)
 		new_list = split_by_ifs(shell, token->value, shell->expander->ifs);
-	if (new_list && ft_lstsize(new_list) > 1)
+	if (!new_list)
+		return ;
+	if (ft_lstsize(new_list) > 1)
 		*node = replace_node(head, *node, new_list);
+	else
+		ft_lstclear(&new_list, free_token);
 }

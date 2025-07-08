@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:37:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/10 20:22:49 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/04 12:08:41 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static void	sigint_handler(int signo)
 {
 	(void)signo;
 	g_sig_flag = 1;
-	if (printf("\n") < 0)
-		perror("printf (from sigint_handler) failed");
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

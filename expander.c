@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:38:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/28 17:36:13 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/07 08:23:16 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	init_expander(t_shell *shell)
 	shell->expander->last_exit_status = shell->last_exit_status;
 	shell->expander->ast = shell->parser->ast;
 	shell->expander->envp_list = shell->envp_list;
-	shell->expander->ifs = get_env_value(shell->envp_list, "IFS");
+	shell->expander->ifs = get_envp_value(shell->envp_list, "IFS");
 	if (!shell->expander->ifs)
 		shell->expander->ifs = " \t\n";
 }

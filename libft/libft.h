@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:05:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/28 17:23:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/04 08:12:12 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 #  define BUFFER_SIZE 512
 # endif
 
-typedef struct s_list
+typedef struct s_list	t_list;
+
+struct s_list
 {
 	void			*content;
 	struct s_list	*prev;
 	struct s_list	*next;
-}	t_list;
+};
 
 // char functions
 int		ft_isalnum(int c);
