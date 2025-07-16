@@ -6,9 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 00:46:35 by cwon              #+#    #+#             */
-/*   Updated: 2024/09/08 17:05:36 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:55:41 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
 
 #include "libft.h"
 
@@ -43,7 +45,7 @@ char	*ft_itoa(int n)
 	len = digit_len(n);
 	if (n < 0)
 		len++;
-	result = (char *)malloc(len + 1);
+	result = malloc(len + 1);
 	if (result)
 	{
 		result[len] = 0;

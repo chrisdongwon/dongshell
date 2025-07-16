@@ -6,10 +6,16 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:15:09 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 08:23:08 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:17:17 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "envp.h"
+#include "expander.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static char	*extract_var(t_shell *shell, const char *str)

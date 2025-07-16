@@ -6,10 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:53:47 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/03 12:38:03 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:21:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "libft/libft.h"
 #include "minishell.h"
 
 int	main(int argc, char **argv, char **envp)

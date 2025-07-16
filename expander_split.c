@@ -6,10 +6,15 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:56:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/05 22:13:59 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:17:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "expander.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static void	reassign_head(t_list **head, t_list *new_list, t_list *next)

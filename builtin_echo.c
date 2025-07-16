@@ -6,10 +6,15 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:53:30 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 12:15:45 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:24:34 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
+#include "builtin.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static bool	echo_handle_no_args(t_list *current)

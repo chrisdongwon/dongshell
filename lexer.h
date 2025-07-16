@@ -6,21 +6,26 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:09:16 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 13:52:11 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:21:47 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-# include "libft/libft.h"
+# include <stdbool.h>
+# include <stddef.h>
 
 typedef enum e_token_type	t_token_type;
 typedef struct s_lexer		t_lexer;
+typedef struct s_list		t_list;
 typedef struct s_shell		t_shell;
+typedef struct s_string		t_string;
 typedef struct s_token		t_token;
 
+struct						s_list;
 struct						s_shell;
+struct						s_string;
 
 enum e_token_type
 {

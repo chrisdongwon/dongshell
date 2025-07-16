@@ -6,10 +6,13 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:56:17 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/05 22:08:54 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:14:30 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "../libft.h"
 #include "ft_string.h"
 
 static bool	double_capacity(t_string *str, size_t min_capacity)
@@ -55,7 +58,7 @@ bool	append_string(t_string *str, const char *ptr)
 
 bool	init_string(t_string *str)
 {
-	str->buffer = (char *)malloc(1);
+	str->buffer = malloc(1);
 	if (!str->buffer)
 		return (false);
 	str->buffer[0] = 0;

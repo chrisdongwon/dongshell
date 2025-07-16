@@ -6,11 +6,16 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:51 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 13:53:21 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/11 13:05:12 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "ast.h"
+#include "libft/libft.h"
 #include "minishell.h"
+#include "parser.h"
 
 static void	set_argv_list(t_shell *shell, t_ast *ast)
 {
@@ -28,33 +33,6 @@ token->quote))
 			flush_and_exit(shell, "append_new_token", EXIT_FAILURE);
 		advance(parser);
 	}
-}
-
-static bool	set_redir_list(t_shell *shell, t_ast *ast)
-{
-	char			*value;
-	t_parser		*parser;
-	t_token			*token;
-	t_token_type	type;
-
-	parser = shell->parser;
-	while (peek(parser) && is_redir(peek(parser)->type))
-	{
-		type = peek(parser)->type;
-		advance(parser);
-		if (!peek(parser) || peek(parser)->type != TOKEN_WORD)
-		{
-			shell->parser->syntax_error = true;
-			free(ast);
-			return (false);
-		}
-		token = peek(parser);
-		value = token->value;
-		if (!append_new_token(&ast->redir_list, value, type, token->quote))
-			flush_and_exit(shell, "append_new_token", EXIT_FAILURE);
-		advance(parser);
-	}
-	return (true);
 }
 
 static t_ast	*parse_subshell(t_shell *shell)

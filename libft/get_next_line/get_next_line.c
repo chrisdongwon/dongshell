@@ -6,11 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 15:32:02 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/07 21:34:15 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:13:54 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "../libft.h"
 
 static char	*flush_gnl(char **remaining, char *buffer, int success)
 {

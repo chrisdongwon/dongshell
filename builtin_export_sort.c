@@ -6,10 +6,13 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 12:10:58 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/08 12:25:00 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:25:29 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtin.h"
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static t_list	*merge(t_list *left, t_list *right)

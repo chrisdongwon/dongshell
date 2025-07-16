@@ -6,9 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 22:17:00 by cwon              #+#    #+#             */
-/*   Updated: 2024/11/07 21:14:14 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:56:09 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
 
 #include "libft.h"
 
@@ -68,7 +70,7 @@ char	**ft_split(const char *s, char c)
 
 	count = word_count(s, c);
 	i = 0;
-	result = (char **)malloc((count + 1) * sizeof(char *));
+	result = malloc((count + 1) * sizeof(char *));
 	if (result)
 	{
 		start = 0;

@@ -6,19 +6,26 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:48:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 21:04:00 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/11 14:19:56 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
-# include <dirent.h>
-
-# include "parser.h"
+# include <stdbool.h>
 
 typedef struct dirent		t_dirent;
+typedef struct s_ast		t_ast;
 typedef struct s_expander	t_expander;
+typedef struct s_list		t_list;
+typedef struct s_shell		t_shell;
+typedef struct s_token		t_token;
+
+struct						s_ast;
+struct						s_list;
+struct						s_shell;
+struct						s_token;
 
 struct s_expander
 {
@@ -28,6 +35,12 @@ struct s_expander
 	t_ast		*ast;
 	t_list		*envp_list;
 };
+
+// expander_heredoc_util.c
+bool	collect_heredoc(const char *delim, const char *filename);
+
+// expander_heredoc.c
+void	prepare_heredocs(t_shell *shell, t_ast *ast);
 
 // expander_sort.c
 t_list	*merge_token_nodes(t_list *a, t_list *b);

@@ -6,10 +6,17 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:37:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 12:08:41 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:19:51 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define _POSIX_C_SOURCE 200809L
+
+#include <readline/readline.h>
+#include <stdio.h>
+#include <unistd.h>
+
+#include "libft/libft.h"
 #include "signal_handler.h"
 
 volatile sig_atomic_t	g_sig_flag = 0;

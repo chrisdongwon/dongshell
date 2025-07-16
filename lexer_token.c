@@ -6,11 +6,12 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:42:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/03 14:13:58 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:16:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "libft/libft.h"
 
 static bool	close_quotes(const char **s)
 {

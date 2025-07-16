@@ -6,11 +6,13 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:05:58 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 21:04:25 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:02:52 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
+#include "lexer.h"
+#include "libft/libft.h"
 
 static void	split_list(t_list *list, t_list **front, t_list **back)
 {

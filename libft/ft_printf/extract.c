@@ -6,10 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 16:53:25 by cwon              #+#    #+#             */
-/*   Updated: 2024/09/22 10:02:01 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:13:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../libft.h"
 #include "ft_printf.h"
 
 static void	extract_flags(const char **str, t_spec *spec)

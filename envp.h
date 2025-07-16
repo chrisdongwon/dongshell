@@ -6,18 +6,20 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:27:36 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 15:19:27 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 18:30:27 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENVP_H
 # define ENVP_H
 
-# include "libft/libft.h"
+# include <stdbool.h>
 
 typedef struct s_envp	t_envp;
+typedef struct s_list	t_list;
 typedef struct s_shell	t_shell;
 
+struct					s_list;
 struct					s_shell;
 
 struct s_envp
@@ -26,6 +28,9 @@ struct s_envp
 	char	*key;
 	char	*value;
 };
+
+// envp_array.c
+char	**list_to_envp_array(t_shell *shell, t_list *node);
 
 // envp_set.c
 void	set_env(t_shell *shell, const char *key, const char *value, \

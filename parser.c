@@ -6,11 +6,15 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 19:59:08 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 08:42:09 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:19:05 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "ast.h"
 #include "minishell.h"
+#include "parser.h"
 
 static void	init_parser(t_shell *shell)
 {

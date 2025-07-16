@@ -6,10 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:15:16 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 16:09:47 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:16:27 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 bool	is_valid_identifier(const char *key)

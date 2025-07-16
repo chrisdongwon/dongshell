@@ -6,10 +6,13 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 09:17:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/06 16:52:33 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:09:49 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "../libft.h"
 #include "ft_printf.h"
 
 void	convert_char(va_list *args, int *count, t_spec spec)
@@ -34,6 +37,14 @@ void	convert_char(va_list *args, int *count, t_spec spec)
 	free(space_pad);
 }
 
+void	convert_percent_literal(int *count)
+{
+	if (ft_putchar_fd('%', 1) != -1)
+		*count += 1;
+	else
+		*count = -1;
+}
+
 void	convert_string(va_list *args, int *count, t_spec spec)
 {
 	char	*str;
@@ -56,12 +67,4 @@ void	convert_string(va_list *args, int *count, t_spec spec)
 	if (!str)
 		return (flush_printf(count, str));
 	return (format_print(spec, str, count));
-}
-
-void	convert_percent_literal(int *count)
-{
-	if (ft_putchar_fd('%', 1) != -1)
-		*count += 1;
-	else
-		*count = -1;
 }

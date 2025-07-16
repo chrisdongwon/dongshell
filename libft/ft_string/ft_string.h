@@ -6,14 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:53:48 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/02 16:09:21 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:14:08 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_STRING_H
 # define FT_STRING_H
 
-# include "../libft.h"
+# include <stdbool.h>
 
 typedef struct s_string	t_string;
 

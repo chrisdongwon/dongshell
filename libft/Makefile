@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/03 16:52:39 by cwon              #+#    #+#              #
-#    Updated: 2025/06/28 17:22:44 by cwon             ###   ########.fr        #
+#    Updated: 2025/07/10 16:47:21 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ NAME = libft.a
 HEADER = \
 	libft.h \
 	ft_printf/ft_printf.h \
-	ft_string/ft_string.h
+	ft_string/ft_string.h \
+	get_next_line/get_next_line.h
 SRC = \
 	ft_abs.c \
 	ft_atof.c \
@@ -90,7 +91,7 @@ PRINTF_SRC = \
 	ft_printf/convert_numeric.c \
 	ft_printf/extract.c
 STRING_SRC = ft_string/ft_string.c
-GNL_SRC = get_next_line.c
+GNL_SRC = get_next_line/get_next_line.c
 OBJ = $(SRC:.c=.o) $(PRINTF_SRC:.c=.o) $(GNL_SRC:.c=.o) $(STRING_SRC:.c=.o)
 
 all: $(NAME)

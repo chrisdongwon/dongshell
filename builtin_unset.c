@@ -6,10 +6,17 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:31:18 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 16:00:03 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/16 09:10:42 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
+#include "envp.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static void	unset_envp(t_shell *shell, const char *key)
@@ -56,7 +63,7 @@ int	builtin_unset(t_shell *shell, t_list *argv_list)
 {
 	int		exit_status;
 	t_list	*node;
-	t_envp	*envp_node;
+	t_token	*token;
 
 	exit_status = EXIT_SUCCESS;
 	node = argv_list->next;
@@ -64,8 +71,8 @@ int	builtin_unset(t_shell *shell, t_list *argv_list)
 		return (exit_status);
 	while (node)
 	{
-		envp_node = (t_envp *)node->content;
-		if (envp_node && envp_node->key && !unset_arg(shell, envp_node->key))
+		token = (t_token *)node->content;
+		if (token && token->value && !unset_arg(shell, token->value))
 			exit_status = EXIT_FAILURE;
 		node = node->next;
 	}

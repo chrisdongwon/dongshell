@@ -6,10 +6,17 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:20:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/08 08:25:17 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:25:35 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
+#include "envp.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static int	export_key_only(t_shell *shell, char *key)

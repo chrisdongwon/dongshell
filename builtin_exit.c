@@ -6,10 +6,16 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:21:06 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 08:37:54 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:24:53 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static void	non_numeric_arg(t_shell *shell, t_token *token)

@@ -6,11 +6,17 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:38:46 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 18:43:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:25:01 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include <linux/limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
+#include "libft/libft.h"
 
 int	builtin_pwd(void)
 {
@@ -19,7 +25,7 @@ int	builtin_pwd(void)
 	if (!getcwd(cwd, sizeof(cwd)))
 	{
 		perror("pwd");
-		return (1);
+		return (EXIT_FAILURE);
 	}
 	ft_putstr_fd(cwd, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);

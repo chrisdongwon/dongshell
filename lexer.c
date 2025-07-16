@@ -6,10 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:12:08 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 08:40:47 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:25:53 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static void	append_token_to_lexer(t_shell *shell, t_token **token, \

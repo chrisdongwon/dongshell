@@ -6,17 +6,18 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:06:21 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/03 00:05:01 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/11 13:01:22 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AST_H
 # define AST_H
 
-# include "lexer.h"
-
 typedef enum e_ast_type	t_ast_type;
 typedef struct s_ast	t_ast;
+typedef struct s_list	t_list;
+
+struct					s_list;
 
 enum e_ast_type
 {
@@ -33,6 +34,7 @@ struct s_ast
 	t_ast		*right;
 	t_ast_type	type;
 	t_list		*argv_list;
+	t_list		*heredoc_delim;
 	t_list		*redir_list;
 };
 

@@ -6,23 +6,18 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:05:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 08:12:12 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:46:37 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <stdbool.h>
-# include <stdlib.h>
-# include <unistd.h>
+# include <sys/types.h>
 
 # include "ft_printf/ft_printf.h"
 # include "ft_string/ft_string.h"
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 512
-# endif
+# include "get_next_line/get_next_line.h"
 
 typedef struct s_list	t_list;
 
@@ -77,15 +72,13 @@ void	*ft_memmove(void *dest, const void *src, size_t n);
 void	*ft_memset(void *s, int c, size_t n);
 void	ft_bzero(void *s, size_t n);
 
-// print functions
-int		ft_printf(const char *format, ...);
+// put functions
 ssize_t	ft_putchar_fd(char c, int fd);
 ssize_t	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 // string functions
-bool	get_next_line(int fd, char **result);
 char	**ft_split(const char *s, char c);
 char	*ft_str_realloc(char *ptr, size_t old_size, size_t new_size);
 char	*ft_strchr(const char *s, int c);

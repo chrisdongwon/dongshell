@@ -6,11 +6,19 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:38:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 08:23:16 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/11 13:36:19 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "ast.h"
+#include "envp.h"
+#include "expander.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
+#include "parser.h"
 
 static void	expand_list(t_shell *shell, t_list **list, bool is_argv)
 {
@@ -52,7 +60,7 @@ static void	init_expander(t_shell *shell)
 {
 	shell->expander = malloc(sizeof(t_expander));
 	if (!shell->expander)
-		flush_shell(shell);
+		flush_and_exit(shell, "malloc", EXIT_FAILURE);
 	shell->expander->sub_error = false;
 	shell->expander->last_exit_status = shell->last_exit_status;
 	shell->expander->ast = shell->parser->ast;
@@ -66,6 +74,12 @@ bool	expander(t_shell *shell)
 {
 	init_expander(shell);
 	expand_ast(shell, shell->expander->ast);
+	if (shell->expander->sub_error)
+	{
+		shell->last_exit_status = 1;
+		return (false);
+	}
+	prepare_heredocs(shell, shell->expander->ast);
 	if (shell->expander->sub_error)
 	{
 		shell->last_exit_status = 1;

@@ -6,10 +6,18 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:11:54 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 08:23:39 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:19:02 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static char	*build_prompt(t_shell *shell, char *user, char *host, char *cwd)

@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/07/08 12:17:37 by cwon             ###   ########.fr        #
+#    Updated: 2025/07/15 12:11:54 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 HEADER = \
 	ast.h \
+	builtin.h \
 	envp.h \
 	executor.h \
 	expander.h \
@@ -41,11 +42,21 @@ SRC = \
 	builtin_pwd.c \
 	builtin_unset.c \
 	builtin_util.c \
+	envp_array.c \
 	envp_set.c \
 	envp_util.c \
 	envp.c \
 	executor_builtin.c \
+	executor_command.c \
+	executor_path.c \
+	executor_pipe.c \
+	executor_process.c \
+	executor_redir.c \
+	executor_signals.c \
+	executor_util.c \
 	executor.c \
+	expander_heredoc_util.c \
+	expander_heredoc.c \
 	expander_sort.c \
 	expander_split.c \
 	expander_util.c \
@@ -59,6 +70,7 @@ SRC = \
 	minishell_print.c \
 	minishell.c \
 	parser_pipeline.c \
+	parser_redir.c \
 	parser_util.c \
 	parser.c \
 	prompt.c \

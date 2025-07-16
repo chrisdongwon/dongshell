@@ -6,10 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:43:44 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 15:42:23 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:16:35 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 t_envp	*get_envp(t_shell *shell, const char *key)

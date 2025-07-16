@@ -6,9 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 20:51:48 by cwon              #+#    #+#             */
-/*   Updated: 2024/09/08 17:07:19 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:52:38 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
 
 #include "libft.h"
 
@@ -22,7 +24,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	j = 0;
 	if (!s1 || !s2)
 		return (0);
-	ptr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	ptr = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (ptr)
 	{
 		while (s1[j])

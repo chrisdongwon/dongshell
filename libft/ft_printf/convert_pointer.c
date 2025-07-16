@@ -6,10 +6,13 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 10:04:28 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/06 16:52:46 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:10:14 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "../libft.h"
 #include "ft_printf.h"
 
 static size_t	hex_length(unsigned long n)
@@ -29,11 +32,11 @@ static size_t	hex_length(unsigned long n)
 
 static char	*to_hex_string(unsigned long n, const char *hex)
 {
-	size_t	len;
 	char	*result;
+	size_t	len;
 
 	len = hex_length(n) + 2;
-	result = (char *)malloc(len + 1);
+	result = malloc(len + 1);
 	if (!result)
 		return (0);
 	result[len--] = 0;
@@ -54,8 +57,8 @@ static char	*to_hex_string(unsigned long n, const char *hex)
 
 void	convert_pointer(va_list *args, int *count, t_spec spec)
 {
-	void	*ptr;
 	char	*str;
+	void	*ptr;
 
 	ptr = va_arg(*args, void *);
 	if (!ptr)

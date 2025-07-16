@@ -6,11 +6,12 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 07:55:19 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 08:47:38 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:24:43 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "builtin.h"
+#include "libft/libft.h"
 
 static bool	skip_sign_and_validate(const char **str, bool *negative)
 {

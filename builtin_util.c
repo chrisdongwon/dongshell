@@ -6,10 +6,15 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 15:37:31 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 20:53:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:25:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "builtin.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static size_t	escaped_length(const char *value)

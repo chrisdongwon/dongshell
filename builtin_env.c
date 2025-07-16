@@ -6,10 +6,15 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:47:24 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/05 21:23:13 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:25:19 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
+#include "builtin.h"
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 int	builtin_env(t_shell *shell)

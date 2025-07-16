@@ -6,9 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:07:14 by cwon              #+#    #+#             */
-/*   Updated: 2024/09/08 17:08:09 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:58:10 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
 
 #include "libft.h"
 
@@ -25,7 +27,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		len = 0;
 	else if (len >= total_len - start)
 		len = total_len - start;
-	ptr = (char *)malloc(len + 1);
+	ptr = malloc(len + 1);
 	if (ptr)
 	{
 		i = 0;

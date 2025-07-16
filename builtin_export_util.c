@@ -6,10 +6,16 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:41:42 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/08 14:31:11 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:25:32 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static t_envp	*copy_envp(t_envp *envp)

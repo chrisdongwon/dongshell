@@ -6,19 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 17:48:37 by cwon              #+#    #+#             */
-/*   Updated: 2024/11/07 19:48:03 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:11:05 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include <stdlib.h>
 
-void	put_space(char *pad, size_t len, int *count)
-{
-	if (*count != -1 && ft_putstr_fd(pad, 1) != -1)
-		*count += len;
-	else
-		*count = -1;
-}
+#include "../libft.h"
+#include "ft_printf.h"
 
 static void	swap(char *str, size_t i, size_t j)
 {
@@ -27,6 +22,16 @@ static void	swap(char *str, size_t i, size_t j)
 	temp = str[i];
 	str[i] = str[j];
 	str[j] = temp;
+}
+
+char	*pad_string(size_t n, const char c)
+{
+	char	*str;
+
+	str = malloc(n + 1);
+	str = ft_memset(str, c, n);
+	str[n] = 0;
+	return (str);
 }
 
 void	pad_zero(char **str, size_t zero_len)
@@ -49,12 +54,10 @@ void	pad_zero(char **str, size_t zero_len)
 	*str = result;
 }
 
-char	*pad_string(size_t n, const char c)
+void	put_space(char *pad, size_t len, int *count)
 {
-	char	*str;
-
-	str = (char *)malloc(n + 1);
-	str = (char *)ft_memset(str, c, n);
-	str[n] = 0;
-	return (str);
+	if (*count != -1 && ft_putstr_fd(pad, 1) != -1)
+		*count += len;
+	else
+		*count = -1;
 }

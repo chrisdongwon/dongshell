@@ -6,20 +6,23 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 12:45:17 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/06 16:52:40 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:12:49 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "../libft.h"
 #include "ft_printf.h"
 
 static int	pad_sign(t_spec spec, char **str)
 {
-	char	*sign;
 	char	*result;
+	char	*sign;
 
 	if ((spec.space || spec.plus) && *str && *str[0] != '-')
 	{
-		sign = (char *)malloc(2);
+		sign = malloc(2);
 		if (!sign)
 			return (0);
 		if (spec.space && spec.plus)
@@ -42,8 +45,8 @@ static int	pad_sign(t_spec spec, char **str)
 void	convert_int(va_list *args, int *count, t_spec spec)
 {
 	char	*str;
-	size_t	len;
 	size_t	digit_len;
+	size_t	len;
 
 	str = ft_itoa(va_arg(*args, int));
 	len = ft_strlen(str);

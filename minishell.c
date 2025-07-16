@@ -6,11 +6,22 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 00:17:46 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/04 08:24:37 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/16 15:26:53 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "envp.h"
+#include "executor.h"
+#include "expander.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
+#include "parser.h"
+#include "signal_handler.h"
 
 static void	init_shell(t_shell *shell, char **envp)
 {
@@ -25,8 +36,6 @@ static void	init_shell(t_shell *shell, char **envp)
 	setup_signal_handlers();
 }
 
-// exit(EXIT_FAILURE) eventually needs to be updated to indicate
-// the exit signal of the failed child process...?
 void	flush_and_exit(t_shell *shell, const char *error_msg, int exit_status)
 {
 	if (error_msg)

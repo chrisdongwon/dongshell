@@ -6,10 +6,17 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:31:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 16:09:20 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/13 14:24:29 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static const char	*handle_oldpwd(t_shell *shell)

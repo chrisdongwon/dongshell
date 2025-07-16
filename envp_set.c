@@ -6,10 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:22 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 15:41:43 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:16:19 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "envp.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static t_list	*get_envp_node(t_shell *shell, const char *key)

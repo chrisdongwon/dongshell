@@ -6,10 +6,16 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:38:21 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/07 20:36:03 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:33:48 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <dirent.h>
+#include <stdlib.h>
+
+#include "expander.h"
+#include "lexer.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static bool	match_wildcard(const char *pattern, const char *string)

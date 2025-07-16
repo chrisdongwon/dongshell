@@ -6,11 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:30:23 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/02 16:34:30 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:17:37 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
 #include "lexer.h"
+#include "libft/libft.h"
 
 bool	add_token(t_list **list, t_token *token)
 {

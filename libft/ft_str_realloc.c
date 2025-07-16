@@ -6,9 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:22:32 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/09 18:12:02 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:56:14 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
 
 #include "libft.h"
 
@@ -22,7 +24,7 @@ char	*ft_str_realloc(char *ptr, size_t old_size, size_t new_size)
 		free(ptr);
 		return (0);
 	}
-	result = (char *)malloc(new_size);
+	result = malloc(new_size);
 	if (!result)
 		return (0);
 	if (!ptr)

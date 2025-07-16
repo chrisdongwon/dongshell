@@ -6,11 +6,12 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 13:42:54 by cwon              #+#    #+#             */
-/*   Updated: 2025/06/25 13:43:59 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 16:13:30 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
+#include "libft/libft.h"
 
 bool	ifs_delim(char c, const char *ifs)
 {

@@ -6,10 +6,11 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 12:51:00 by cwon              #+#    #+#             */
-/*   Updated: 2024/11/07 19:30:31 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:10:31 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../libft.h"
 #include "ft_printf.h"
 
 static void	init_spec(t_spec *spec)

@@ -6,64 +6,59 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:37:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/08 14:40:29 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/16 11:51:54 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include <linux/limits.h>
-# include <stdio.h>
-# include <sys/types.h>
-# include <unistd.h>
+# include <stdbool.h>
 
-# include "envp.h"
-# include "expander.h"
+typedef struct s_ast		t_ast;
+typedef struct s_list		t_list;
+typedef struct s_shell		t_shell;
+typedef struct sigaction	t_sigaction;
 
-// builtin_cd.c
-int			builtin_cd(t_shell *shell, t_list *argv_list);
-
-// builtin_echo.c
-int			builtin_echo(t_list *argv_list);
-
-// builtin_env.c
-int			builtin_env(t_shell *shell);
-
-// builtin_exit_util.c
-bool		is_numeric_long(const char *str);
-long		str_to_long(const char *str);
-
-// builtin_exit.c
-int			builtin_exit(t_shell *shell, t_list *argv_list);
-
-// builtin_export_sort.c
-t_list		*mergesort_envp(t_list *node);
-
-// builtin_export_util.c
-void		print_sorted_env(t_shell *shell);
-
-// builtin_export.c
-int			builtin_export(t_shell *shell, t_list *argv_list);
-
-// builtin_pwd.c
-int			builtin_pwd(void);
-
-// builtin_unset.c
-int			builtin_unset(t_shell *shell, t_list *argv_list);
-
-// builtin_util.c
-char		*escape_value(const char *value);
-const char	*get_argv_value(t_list *argv_list, int index);
+struct						s_ast;
+struct						s_list;
+struct						s_shell;
 
 // executor_builtin.c
-bool		is_builtin(t_list *argv_list);
-int			exec_builtin(t_shell *shell, t_list *argv_list);
+bool	is_builtin(t_list *argv_list);
+int		exec_builtin_with_redirection(t_shell *shell, t_ast *ast);
+
+// executor_command.c
+int		exec_command(t_shell *shell, t_ast *ast);
+
+// executor_path.c
+char	**get_path_dirs(t_list *envp_list);
+char	*check_direct_path(t_shell *shell, const char *command);
+char	*search_in_path(t_shell *shell, char **paths, const char *command);
+
+// executor_pipe.c
+int		exec_pipe(t_shell *shell, t_ast *ast);
+
+// executor_process.c
+bool	safe_pipe(int pipefd[2], int prev_fd);
+void	safe_close(int fd);
+void	safe_execve(t_shell *shell, t_ast *ast, char *pathname);
+
+// executor_redir.c
+void	apply_redirections(t_shell *shell, t_list *redir_list);
+
+// executor_signals.c
+void	ignore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit);
+void	restore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit);
+void	setup_child_signals(void);
+
+// executor_util.c
+bool	safe_pipe(int pipefd[2], int prev_fd);
+char	**list_to_argv_array(t_shell *shell, t_list *argv_list);
+void	free_str_array(char **arr);
+void	safe_close(int fd);
 
 // executor.c
-int			exec_ast(t_shell *shell, t_ast *ast);
-
-// minishell.c
-void		flush_shell(t_shell *shell);
+int		exec_ast(t_shell *shell, t_ast *ast);
 
 #endif

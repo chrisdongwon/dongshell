@@ -6,10 +6,13 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 23:21:21 by cwon              #+#    #+#             */
-/*   Updated: 2025/05/06 16:52:28 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/10 17:11:33 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
+#include "../libft.h"
 #include "ft_printf.h"
 
 static void	add_header(char *result, const char *hex)
@@ -38,13 +41,13 @@ static size_t	hex_length(unsigned int n)
 
 static char	*to_hex_string(unsigned int n, t_spec spec, const char *hex)
 {
-	size_t	len;
 	char	*result;
+	size_t	len;
 
 	len = hex_length(n);
 	if (spec.pound && n)
 		len += 2;
-	result = (char *)malloc(len + 1);
+	result = malloc(len + 1);
 	if (!result)
 		return (0);
 	result[len--] = 0;
@@ -63,8 +66,8 @@ static char	*to_hex_string(unsigned int n, t_spec spec, const char *hex)
 void	convert_hex(va_list *args, int *count, t_spec spec, const char *hex)
 {
 	char			*str;
-	size_t			len;
 	size_t			digit_len;
+	size_t			len;
 	unsigned int	val;
 
 	val = va_arg(*args, unsigned int);
