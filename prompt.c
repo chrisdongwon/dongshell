@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:11:54 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 17:19:02 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/17 14:07:15 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,7 @@ void	read_command(t_shell *shell)
 	shell->prompt = get_prompt(shell);
 	shell->command = readline(shell->prompt);
 	if (!shell->command)
-	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
 		flush_and_exit(shell, 0, shell->last_exit_status);
-	}
 	if (*(shell->command))
 		add_history(shell->command);
 }

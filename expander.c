@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:38:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/11 13:36:19 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 21:10:23 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	expand_list(t_shell *shell, t_list **list, bool is_argv)
 	while (node)
 	{
 		token = (t_token *)node->content;
-		if (token->quote != '\'' && token->value[0] == '$')
+		if (token->quote != '\'' && ft_strstr(token->value, "$"))
 		{
 			expand_variable(shell, token);
 			if (!token->quote && is_argv && shell->expander->ifs)

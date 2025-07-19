@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:56:57 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/15 12:01:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 22:36:34 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,6 @@ void	ignore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit)
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, old_int);
 	sigaction(SIGQUIT, &sa, old_quit);
-}
-
-void	setup_child_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 }
 
 void	restore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit)

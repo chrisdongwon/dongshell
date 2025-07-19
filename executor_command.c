@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:07:10 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 15:29:13 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 22:38:32 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include "lexer.h"
 #include "libft/libft.h"
 #include "minishell.h"
+#include "signal_handler.h"
 
 static char	*get_command_path(t_shell *shell, t_list *argv, t_list *envp)
 {
@@ -94,7 +95,7 @@ int	exec_command(t_shell *shell, t_ast *ast)
 	}
 	if (!pid)
 	{
-		setup_child_signals();
+		reset_signal_handlers();
 		pathname = get_command_path(shell, ast->argv_list, shell->envp_list);
 		if (!pathname)
 			command_not_found(shell, ast);

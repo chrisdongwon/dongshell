@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:37:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 11:51:54 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 22:37:55 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	apply_redirections(t_shell *shell, t_list *redir_list);
 // executor_signals.c
 void	ignore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit);
 void	restore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit);
-void	setup_child_signals(void);
 
 // executor_util.c
 bool	safe_pipe(int pipefd[2], int prev_fd);

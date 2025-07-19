@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 15:37:31 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 14:25:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 21:53:47 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,22 @@ const char	*get_argv_value(t_list *argv_list, int index)
 		node = node->next;
 	}
 	return (0);
+}
+
+size_t	count_builtin_arguments(t_list *argv_list)
+{
+	size_t	count;
+	t_list	*node;
+	t_token	*token;
+
+	count = 0;
+	node = argv_list->next;
+	while (node)
+	{
+		token = (t_token *)node->content;
+		if (token->value)
+			count++;
+		node = node->next;
+	}
+	return (count);
 }

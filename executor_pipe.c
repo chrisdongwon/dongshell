@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 11:29:40 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 22:36:58 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "ast.h"
 #include "executor.h"
 #include "minishell.h"
+#include "signal_handler.h"
 
 static pid_t	child_process(t_shell *shell, t_ast *ast, int in_fd, int out_fd)
 {
@@ -34,8 +35,8 @@ static pid_t	child_process(t_shell *shell, t_ast *ast, int in_fd, int out_fd)
 	}
 	if (!pid)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		reset_signal_handlers();
+		signal(SIGPIPE, SIG_DFL);
 		if (in_fd >= 0)
 		{
 			dup2(in_fd, STDIN_FILENO);

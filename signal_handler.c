@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:37:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 17:19:51 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 22:35:53 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ static void	sigquit_handler(int signo)
 
 void	reset_signal_handlers(void)
 {
-	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-		perror("signal (from reset_signal_handlers) failed");
-	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
-		perror("signal (from reset_signal_handlers) failed");
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 void	setup_signal_handlers(void)

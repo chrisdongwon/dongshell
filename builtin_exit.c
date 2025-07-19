@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:21:06 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 14:24:53 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 21:58:14 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	non_numeric_arg(t_shell *shell, t_token *token)
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(token->value, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-	flush_and_exit(shell, 0, 255);
+	flush_and_exit(shell, 0, 2);
 }
 
 int	builtin_exit(t_shell *shell, t_list *argv_list)
@@ -36,7 +36,6 @@ int	builtin_exit(t_shell *shell, t_list *argv_list)
 	argv_2 = 0;
 	if (argv_1)
 		argv_2 = argv_1->next;
-	ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (!argv_1)
 		flush_and_exit(shell, 0, shell->last_exit_status);
 	token = (t_token *)argv_1->content;

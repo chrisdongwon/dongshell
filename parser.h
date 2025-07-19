@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:55:32 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/11 13:12:07 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 22:25:11 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,16 @@ struct s_parser
 t_ast	*parse_pipeline(t_shell *shell);
 
 // parser_redir.c
-bool	set_redir_list(t_shell *shell, t_ast *ast);
+bool	is_redir(t_token_type type);
+bool	validate_redir(t_shell *shell, t_ast *ast);
+void	process_redir(t_shell *shell, t_ast *ast, t_token *token, \
+t_token_type type);
 
 // parse_util.c
 bool	match(t_parser *parser, t_token_type type);
 t_token	*advance(t_parser *parser);
 t_token	*peek(t_parser *parser);
+void	add_token_to_argv(t_shell *shell, t_list **argv_list, t_token *token);
 
 // parser.c
 bool	parser(t_shell *shell);

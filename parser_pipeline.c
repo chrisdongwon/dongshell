@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:51 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/11 13:05:12 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 22:25:45 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,30 @@
 #include "minishell.h"
 #include "parser.h"
 
-static void	set_argv_list(t_shell *shell, t_ast *ast)
+static bool	set_command_parts(t_shell *shell, t_parser *parser, t_ast *ast)
 {
-	char		*value;
-	t_parser	*parser;
-	t_token		*token;
+	t_token			*token;
+	t_token_type	type;
 
-	parser = shell->parser;
-	while (peek(parser) && peek(parser)->type == TOKEN_WORD)
+	while (peek(parser))
 	{
 		token = peek(parser);
-		value = token->value;
-		if (!append_new_token(&ast->argv_list, value, token->type, \
-token->quote))
-			flush_and_exit(shell, "append_new_token", EXIT_FAILURE);
+		if (token->type == TOKEN_WORD)
+			add_token_to_argv(shell, &ast->argv_list, token);
+		else if (is_redir(token->type))
+		{
+			type = token->type;
+			advance(parser);
+			if (!validate_redir(shell, ast))
+				return (false);
+			token = peek(parser);
+			process_redir(shell, ast, token, type);
+		}
+		else
+			break ;
 		advance(parser);
 	}
+	return (true);
 }
 
 static t_ast	*parse_subshell(t_shell *shell)
@@ -58,8 +66,8 @@ static t_ast	*parse_subshell(t_shell *shell)
 
 static t_ast	*parse_command(t_shell *shell)
 {
-	t_ast		*ast;
 	t_parser	*parser;
+	t_ast		*ast;
 
 	parser = shell->parser;
 	if (peek(parser) && peek(parser)->type == TOKEN_PAREN_OPEN)
@@ -68,8 +76,7 @@ static t_ast	*parse_command(t_shell *shell)
 	if (!ast)
 		flush_and_exit(shell, "ft_calloc", EXIT_FAILURE);
 	ast->type = AST_COMMAND;
-	set_argv_list(shell, ast);
-	if (!set_redir_list(shell, ast))
+	if (!set_command_parts(shell, shell->parser, ast))
 		return (0);
 	return (ast);
 }

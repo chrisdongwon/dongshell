@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:22:16 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 16:00:23 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 21:53:59 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BUILTIN_H
 
 # include <stdbool.h>
+# include <stddef.h>
 
 typedef struct s_list	t_list;
 typedef struct s_shell	t_shell;
@@ -55,5 +56,6 @@ int			builtin_unset(t_shell *shell, t_list *argv_list);
 // builtin_util.c
 char		*escape_value(const char *value);
 const char	*get_argv_value(t_list *argv_list, int index);
+size_t		count_builtin_arguments(t_list *argv_list);
 
 #endif

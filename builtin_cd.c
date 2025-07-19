@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:31:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 14:24:29 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/19 21:56:09 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static const char	*handle_oldpwd(t_shell *shell)
 	oldpwd = get_envp(shell, "OLDPWD");
 	if (!oldpwd || !oldpwd->value)
 	{
-		ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", STDERR_FILENO);
 		return (0);
 	}
 	ft_putstr_fd(oldpwd->value, STDOUT_FILENO);
@@ -45,7 +45,7 @@ static const char	*cd_get_target(t_shell *shell, t_list *argv_list)
 		home = get_envp(shell, "HOME");
 		if (!home || !home->value)
 		{
-			ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
 			return (0);
 		}
 		return (home->value);
@@ -82,6 +82,11 @@ int	builtin_cd(t_shell *shell, t_list *argv_list)
 	char		*oldpwd;
 	const char	*target;
 
+	if (count_builtin_arguments(argv_list) > 1)
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
+		return (1);
+	}
 	target = cd_get_target(shell, argv_list);
 	if (!target)
 		return (1);
