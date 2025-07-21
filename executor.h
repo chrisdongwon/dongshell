@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:37:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/19 22:37:55 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/21 15:25:49 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ struct						s_shell;
 
 // executor_builtin.c
 bool	is_builtin(t_list *argv_list);
-int		exec_builtin_with_redirection(t_shell *shell, t_ast *ast);
+int		exec_builtin_with_redirection(t_shell *shell, t_ast *ast, \
+bool in_pipeline);
 
 // executor_command.c
-int		exec_command(t_shell *shell, t_ast *ast);
+int		exec_command(t_shell *shell, t_ast *ast, bool in_pipeline);
 
 // executor_path.c
 char	**get_path_dirs(t_list *envp_list);
@@ -40,24 +41,23 @@ char	*search_in_path(t_shell *shell, char **paths, const char *command);
 int		exec_pipe(t_shell *shell, t_ast *ast);
 
 // executor_process.c
-bool	safe_pipe(int pipefd[2], int prev_fd);
-void	safe_close(int fd);
+int		create_pipe_or_fail(int pipefd[2], int prev_fd);
+pid_t	fork_or_fail(int prev_fd, int *pipefd);
+void	close_prev_fd(int *prev_fd);
 void	safe_execve(t_shell *shell, t_ast *ast, char *pathname);
 
 // executor_redir.c
 void	apply_redirections(t_shell *shell, t_list *redir_list);
 
 // executor_signals.c
-void	ignore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit);
-void	restore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit);
+int		handle_parent_signals(pid_t pid);
 
 // executor_util.c
-bool	safe_pipe(int pipefd[2], int prev_fd);
 char	**list_to_argv_array(t_shell *shell, t_list *argv_list);
 void	free_str_array(char **arr);
-void	safe_close(int fd);
+void	remove_empty_tokens(t_list **argv_list);
 
 // executor.c
-int		exec_ast(t_shell *shell, t_ast *ast);
+int		exec_ast(t_shell *shell, t_ast *ast, bool in_pipeline);
 
 #endif

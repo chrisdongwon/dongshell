@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 00:17:46 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 15:26:53 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/21 14:59:22 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	minishell(char **envp)
 		if (lexer(&shell) && parser(&shell))
 		{
 			if (expander(&shell))
-				shell.last_exit_status = exec_ast(&shell, shell.expander->ast);
+				shell.last_exit_status = exec_ast(&shell, shell.expander->ast, \
+false);
 			else
 				ft_putstr_fd("minishell: bad substitution\n", STDERR_FILENO);
 		}

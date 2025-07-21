@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:37:33 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 11:50:23 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/21 15:16:40 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "executor.h"
 #include "lexer.h"
 #include "libft/libft.h"
+#include "signal_handler.h"
 
 static int	exec_builtin(t_shell *shell, t_list *argv_list)
 {
@@ -44,6 +45,25 @@ static int	exec_builtin(t_shell *shell, t_list *argv_list)
 	return (EXIT_FAILURE);
 }
 
+static int	handle_pipeline(t_shell *shell, t_ast *ast)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return (EXIT_FAILURE);
+	}
+	if (!pid)
+	{
+		reset_signal_handlers();
+		apply_redirections(shell, ast->redir_list);
+		exit(exec_builtin(shell, ast->argv_list));
+	}
+	return (handle_parent_signals(pid));
+}
+
 bool	is_builtin(t_list *argv_list)
 {
 	char	*cmd;
@@ -59,25 +79,27 @@ bool	is_builtin(t_list *argv_list)
 !ft_strcmp(cmd, "unset"));
 }
 
-int	exec_builtin_with_redirection(t_shell *shell, t_ast *ast)
+int	exec_builtin_with_redirection(t_shell *shell, t_ast *ast, bool in_pipeline)
 {
-	int	saved_stdin;
-	int	saved_stdout;
 	int	status;
+	int	stdin_dup;
+	int	stdout_dup;
 
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	if (saved_stdin < 0 || saved_stdout < 0)
+	if (in_pipeline)
+		return (handle_pipeline(shell, ast));
+	stdin_dup = dup(STDIN_FILENO);
+	stdout_dup = dup(STDOUT_FILENO);
+	if (stdin_dup < 0 || stdout_dup < 0)
 	{
 		perror("dup");
 		return (EXIT_FAILURE);
 	}
 	apply_redirections(shell, ast->redir_list);
 	status = exec_builtin(shell, ast->argv_list);
-	if (dup2(saved_stdin, STDIN_FILENO) < 0 || \
-dup2(saved_stdout, STDOUT_FILENO) < 0)
+	if (dup2(stdin_dup, STDIN_FILENO) < 0 || \
+dup2(stdout_dup, STDOUT_FILENO) < 0)
 		perror("dup2");
-	close(saved_stdin);
-	close(saved_stdout);
+	close(stdin_dup);
+	close(stdout_dup);
 	return (status);
 }

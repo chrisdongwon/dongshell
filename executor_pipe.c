@@ -6,13 +6,14 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/19 22:36:58 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/20 00:21:49 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define _POSIX_C_SOURCE 200809L
 
 #include <signal.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -23,63 +24,67 @@
 #include "minishell.h"
 #include "signal_handler.h"
 
-static pid_t	child_process(t_shell *shell, t_ast *ast, int in_fd, int out_fd)
+static void	exec_left_child(t_shell *shell, t_ast *ast, int prev_fd, \
+int pipefd[2])
 {
-	pid_t	pid;
+	if (prev_fd != -1)
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
+	}
+	close(pipefd[0]);
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
+	exit(exec_ast(shell, ast->left, true));
+}
 
-	pid = fork();
-	if (pid < 0)
+static void	exec_rightmost_child(t_shell *shell, t_ast *ast, int prev_fd)
+{
+	if (prev_fd != -1)
 	{
-		perror("fork");
-		return (-1);
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
 	}
-	if (!pid)
-	{
-		reset_signal_handlers();
-		signal(SIGPIPE, SIG_DFL);
-		if (in_fd >= 0)
-		{
-			dup2(in_fd, STDIN_FILENO);
-			safe_close(in_fd);
-		}
-		if (out_fd >= 0)
-		{
-			dup2(out_fd, STDOUT_FILENO);
-			safe_close(out_fd);
-		}
-		exit(exec_ast(shell, ast));
-	}
-	return (pid);
+	exit(exec_ast(shell, ast, true));
 }
 
 static int	wait_for_all(pid_t last_pid)
 {
-	int		result;
+	int		last_status;
 	int		status;
 	pid_t	pid;
 
-	result = EXIT_FAILURE;
+	last_status = 0;
 	pid = wait(&status);
 	while (pid > 0)
 	{
-		if (pid == last_pid && WIFEXITED(status))
-			result = WEXITSTATUS(status);
+		if (pid == last_pid)
+		{
+			if (WIFEXITED(status))
+				last_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				last_status = 128 + WTERMSIG(status);
+		}
 		pid = wait(&status);
 	}
-	return (result);
+	return (last_status);
 }
 
-static int	last_process(t_shell *shell, t_ast *ast, int prev_fd)
+static int	last_process(t_shell *shell, t_ast *ast, int prev_fd, \
+pid_t last_pid)
 {
-	pid_t	last_pid;
+	pid_t	pid;
 
-	last_pid = child_process(shell, ast, prev_fd, -1);
-	if (last_pid < 0)
+	if (ast)
 	{
-		safe_close(prev_fd);
-		return (EXIT_FAILURE);
+		pid = fork_or_fail(prev_fd, 0);
+		if (pid < 0)
+			return (EXIT_FAILURE);
+		if (!pid)
+			exec_rightmost_child(shell, ast, prev_fd);
+		last_pid = pid;
 	}
-	safe_close(prev_fd);
+	close_prev_fd(&prev_fd);
 	return (wait_for_all(last_pid));
 }
 
@@ -87,23 +92,24 @@ int	exec_pipe(t_shell *shell, t_ast *ast)
 {
 	int		pipefd[2];
 	int		prev_fd;
+	pid_t	last_pid;
+	pid_t	pid;
 
 	prev_fd = -1;
+	last_pid = -1;
 	while (ast && ast->type == AST_PIPE)
 	{
-		if (!safe_pipe(pipefd, prev_fd))
+		if (create_pipe_or_fail(pipefd, prev_fd) < 0)
 			return (EXIT_FAILURE);
-		if (child_process(shell, ast->left, prev_fd, pipefd[1]) < 0)
-		{
-			safe_close(prev_fd);
-			safe_close(pipefd[0]);
-			safe_close(pipefd[1]);
+		pid = fork_or_fail(prev_fd, pipefd);
+		if (pid < 0)
 			return (EXIT_FAILURE);
-		}
-		safe_close(prev_fd);
-		safe_close(pipefd[1]);
+		if (!pid)
+			exec_left_child(shell, ast, prev_fd, pipefd);
+		close_prev_fd(&prev_fd);
+		close(pipefd[1]);
 		prev_fd = pipefd[0];
 		ast = ast->right;
 	}
-	return (last_process(shell, ast, prev_fd));
+	return (last_process(shell, ast, prev_fd, last_pid));
 }

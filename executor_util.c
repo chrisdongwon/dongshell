@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:16:14 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/15 12:09:10 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/21 15:37:31 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,33 @@ void	free_str_array(char **arr)
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
+}
+
+void	remove_empty_tokens(t_list **argv_list)
+{
+	t_list	*curr;
+	t_list	*prev;
+	t_list	*to_delete;
+	t_token	*token;
+
+	curr = *argv_list;
+	prev = 0;
+	while (curr)
+	{
+		token = (t_token *)curr->content;
+		if (!token->value || !token->value[0])
+		{
+			to_delete = curr;
+			if (prev)
+				prev->next = curr->next;
+			else
+				*argv_list = curr->next;
+			curr = curr->next;
+			free_token(token);
+			free(to_delete);
+			continue ;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
 }

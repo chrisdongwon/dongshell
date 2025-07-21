@@ -6,34 +6,59 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:07:38 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/15 12:12:40 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/20 00:32:50 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "ast.h"
 #include "envp.h"
 #include "executor.h"
 #include "minishell.h"
 
-bool	safe_pipe(int pipefd[2], int prev_fd)
+int	create_pipe_or_fail(int pipefd[2], int prev_fd)
 {
 	if (pipe(pipefd) < 0)
 	{
 		perror("pipe");
-		safe_close(prev_fd);
-		return (false);
+		if (prev_fd != -1)
+			close(prev_fd);
+		return (-1);
 	}
-	return (true);
+	return (0);
 }
 
-void	safe_close(int fd)
+pid_t	fork_or_fail(int prev_fd, int *pipefd)
 {
-	if (fd >= 0)
-		close(fd);
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		if (prev_fd != -1)
+			close(prev_fd);
+		if (pipefd)
+		{
+			close(pipefd[0]);
+			close(pipefd[1]);
+		}
+		return (-1);
+	}
+	return (pid);
+}
+
+void	close_prev_fd(int *prev_fd)
+{
+	if (*prev_fd != -1)
+	{
+		close(*prev_fd);
+		*prev_fd = -1;
+	}
 }
 
 void	safe_execve(t_shell *shell, t_ast *ast, char *pathname)

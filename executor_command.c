@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:07:10 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/19 22:38:32 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/21 15:42:30 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 #include "minishell.h"
 #include "signal_handler.h"
 
+#include "minishell.h"
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 static char	*get_command_path(t_shell *shell, t_list *argv, t_list *envp)
 {
 	char	**paths;
@@ -35,36 +41,16 @@ static char	*get_command_path(t_shell *shell, t_list *argv, t_list *envp)
 
 	token = (t_token *)argv->content;
 	command = token->value;
-	result = check_direct_path(shell, command);
-	if (result)
-		return (result);
+	if (ft_strchr(command, '/'))
+		return (ft_strdup(command));
 	paths = get_path_dirs(envp);
 	if (!paths)
 		flush_and_exit(shell, "ft_split", EXIT_FAILURE);
 	result = search_in_path(shell, paths, command);
 	free_str_array(paths);
+	if (!result)
+		return (0);
 	return (result);
-}
-
-static int	handle_signals(pid_t pid)
-{
-	int			status;
-	t_sigaction	old_int;
-	t_sigaction	old_quit;
-
-	ignore_parent_signals(&old_int, &old_quit);
-	if (waitpid(pid, &status, 0) < 0)
-	{
-		perror("waitpid");
-		restore_parent_signals(&old_int, &old_quit);
-		return (EXIT_FAILURE);
-	}
-	restore_parent_signals(&old_int, &old_quit);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (EXIT_FAILURE);
 }
 
 static void	command_not_found(t_shell *shell, t_ast *ast)
@@ -78,15 +64,52 @@ static void	command_not_found(t_shell *shell, t_ast *ast)
 	flush_and_exit(shell, 0, 127);
 }
 
-int	exec_command(t_shell *shell, t_ast *ast)
+static void	exec_or_error(t_shell *shell, t_ast *ast, char *pathname)
+{
+	struct stat	st;
+
+	if (stat(pathname, &st) < 0)
+		flush_and_exit(shell, "stat", 127);
+	if (S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(pathname, STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		flush_and_exit(shell, 0, 126);
+	}
+	if (access(pathname, X_OK))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(pathname, STDERR_FILENO);
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		flush_and_exit(shell, 0, 126);
+	}
+	safe_execve(shell, ast, pathname);
+}
+
+static void	exec_command_child_process(t_shell *shell, t_ast *ast)
 {
 	char	*pathname;
+
+	reset_signal_handlers();
+	apply_redirections(shell, ast->redir_list);
+	pathname = get_command_path(shell, ast->argv_list, shell->envp_list);
+	if (!pathname)
+		command_not_found(shell, ast);
+	exec_or_error(shell, ast, pathname);
+}
+
+int	exec_command(t_shell *shell, t_ast *ast, bool in_pipeline)
+{
 	pid_t	pid;
 
 	if (!ast || !ast->argv_list || !ast->argv_list->content)
 		return (EXIT_SUCCESS);
+	remove_empty_tokens(&ast->argv_list);
+	if (!ast->argv_list)
+		return (EXIT_SUCCESS);
 	if (is_builtin(ast->argv_list))
-		return (exec_builtin_with_redirection(shell, ast));
+		return (exec_builtin_with_redirection(shell, ast, in_pipeline));
 	pid = fork();
 	if (pid < 0)
 	{
@@ -94,13 +117,6 @@ int	exec_command(t_shell *shell, t_ast *ast)
 		return (EXIT_FAILURE);
 	}
 	if (!pid)
-	{
-		reset_signal_handlers();
-		pathname = get_command_path(shell, ast->argv_list, shell->envp_list);
-		if (!pathname)
-			command_not_found(shell, ast);
-		apply_redirections(shell, ast->redir_list);
-		safe_execve(shell, ast, pathname);
-	}
-	return (handle_signals(pid));
+		exec_command_child_process(shell, ast);
+	return (handle_parent_signals(pid));
 }
