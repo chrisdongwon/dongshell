@@ -6,11 +6,11 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/07/22 15:51:13 by cwon             ###   ########.fr        #
+#    Updated: 2025/07/22 20:50:12 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME = minishell_bonus
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g # remove debug flag when finished

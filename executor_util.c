@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:16:14 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/21 15:37:31 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 20:49:29 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	remove_empty_tokens(t_list **argv_list)
 	while (curr)
 	{
 		token = (t_token *)curr->content;
-		if (!token->value || !token->value[0])
+		if ((!token->value || !token->value[0]) && !token->quote)
 		{
 			to_delete = curr;
 			if (prev)

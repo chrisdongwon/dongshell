@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:42:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 16:16:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 20:51:10 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ static bool	open_quotes(const char **s, char *quote)
 	return (true);
 }
 
-// do i need to take care of nested quotes?
-// what to do if nested quotes are unmatched? does it matter?
 static t_token	*tokenize(t_lexer *lexer, const char **input, const char *s)
 {
 	bool	open_quote;

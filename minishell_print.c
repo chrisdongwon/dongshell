@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 08:35:24 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 16:06:52 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 20:40:14 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_token(void *arg)
 	t_token	*token;
 
 	token = (t_token *)arg;
-	printf(" %s", token->value);
+	printf(" [%s]", token->value);
 }
 
 // delete after testing
