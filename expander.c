@@ -6,11 +6,12 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:38:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/19 21:10:23 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 13:10:36 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "ast.h"
 #include "envp.h"
@@ -38,7 +39,7 @@ static void	expand_list(t_shell *shell, t_list **list, bool is_argv)
 		node = node->next;
 	}
 	if (!shell->expander->sub_error)
-		expand_wildcard(shell, list);
+		expand_wildcard_list(shell, list, is_argv);
 }
 
 static void	expand_ast(t_shell *shell, t_ast *ast)
@@ -76,13 +77,13 @@ bool	expander(t_shell *shell)
 	expand_ast(shell, shell->expander->ast);
 	if (shell->expander->sub_error)
 	{
-		shell->last_exit_status = 1;
+		shell->last_exit_status = EXIT_FAILURE;
 		return (false);
 	}
 	prepare_heredocs(shell, shell->expander->ast);
 	if (shell->expander->sub_error)
 	{
-		shell->last_exit_status = 1;
+		shell->last_exit_status = EXIT_FAILURE;
 		return (false);
 	}
 	return (true);

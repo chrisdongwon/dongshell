@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:07:10 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/21 15:42:30 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 10:00:56 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,11 @@ int	exec_command(t_shell *shell, t_ast *ast, bool in_pipeline)
 {
 	pid_t	pid;
 
-	if (!ast || !ast->argv_list || !ast->argv_list->content)
+	if (!ast)
+		return (EXIT_SUCCESS);
+	if ((!ast->argv_list || !ast->argv_list->content) && ast->redir_list)
+		return (execute_redirection_only(shell, ast));
+	if (!ast->argv_list || !ast->argv_list->content)
 		return (EXIT_SUCCESS);
 	remove_empty_tokens(&ast->argv_list);
 	if (!ast->argv_list)

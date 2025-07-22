@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:48:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/11 14:19:56 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 09:41:34 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdbool.h>
 
+typedef enum e_token_type	t_token_type;
 typedef struct dirent		t_dirent;
 typedef struct s_ast		t_ast;
 typedef struct s_expander	t_expander;
@@ -22,6 +23,7 @@ typedef struct s_list		t_list;
 typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
 
+enum						e_token_type;
 struct						s_ast;
 struct						s_list;
 struct						s_shell;
@@ -59,7 +61,9 @@ bool	ifs_whitespace(char c, const char *ifs);
 void	expand_variable(t_shell *shell, t_token *token);
 
 // expander_wildcard.c
-void	expand_wildcard(t_shell *shell, t_list **list);
+t_list	*expand_pattern(t_shell *shell, const char *pattern, \
+t_token_type token_type);
+void	expand_wildcard_list(t_shell *shell, t_list **list, bool is_argv);
 
 // expander.c
 bool	expander(t_shell *shell);

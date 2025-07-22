@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:37:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/21 15:25:49 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 08:34:22 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	close_prev_fd(int *prev_fd);
 void	safe_execve(t_shell *shell, t_ast *ast, char *pathname);
 
 // executor_redir.c
+int		execute_redirection_only(t_shell *shell, t_ast *ast);
 void	apply_redirections(t_shell *shell, t_list *redir_list);
 
 // executor_signals.c
