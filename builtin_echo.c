@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:53:30 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 14:24:34 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 15:45:08 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ static void	echo_print_args(t_list *current)
 	while (current)
 	{
 		token = (t_token *)current->content;
-		if (token->value)
-			ft_putstr_fd(token->value, STDOUT_FILENO);
+		ft_putstr_fd(token->value, STDOUT_FILENO);
 		if (current->next)
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		current = current->next;

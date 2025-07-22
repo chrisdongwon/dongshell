@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 18:37:19 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 13:12:34 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/22 15:20:38 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static void	print_redir_error(const char *filename)
 		perror(filename);
 }
 
-static void	redirect_input(t_shell *shell, const char *filename)
+static void	redirect_input(t_shell *shell, const char *filename, \
+bool is_heredoc)
 {
 	int	fd;
 
@@ -54,6 +55,8 @@ static void	redirect_input(t_shell *shell, const char *filename)
 		close(fd);
 		flush_and_exit(shell, "dup2", EXIT_FAILURE);
 	}
+	if (is_heredoc)
+		unlink(filename);
 	close(fd);
 }
 
@@ -102,13 +105,13 @@ void	apply_redirections(t_shell *shell, t_list *redir_list)
 	{
 		token = (t_token *)redir_list->content;
 		if (token->type == TOKEN_REDIR_IN)
-			redirect_input(shell, token->value);
+			redirect_input(shell, token->value, false);
 		else if (token->type == TOKEN_REDIR_OUT)
 			redirect_output(shell, token->value, O_TRUNC);
 		else if (token->type == TOKEN_APPEND)
 			redirect_output(shell, token->value, O_APPEND);
 		else if (token->type == TOKEN_HEREDOC)
-			redirect_input(shell, token->value);
+			redirect_input(shell, token->value, true);
 		redir_list = redir_list->next;
 	}
 }
