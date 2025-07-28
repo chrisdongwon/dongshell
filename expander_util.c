@@ -6,10 +6,12 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 13:42:54 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/27 17:53:12 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/28 15:17:07 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "expander.h"
@@ -54,4 +56,14 @@ char	*make_temp_filename(int i)
 	result = ft_strdup(str.buffer);
 	free_string(&str);
 	return (result);
+}
+
+int	open_heredoc_file(const char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	if (fd < 0)
+		perror("open");
+	return (fd);
 }

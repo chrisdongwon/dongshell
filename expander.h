@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:48:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/28 14:26:09 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/28 15:10:27 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ struct s_expander
 };
 
 // expander_heredoc_util.c
-bool	collect_heredoc(const char *delim, const char *filename);
+bool	collect_heredoc(t_shell *shell, const char *delim, \
+const char *filename);
+
 // expander_heredoc.c
 void	prepare_heredocs(t_shell *shell, t_ast *ast, int *i);
 
@@ -56,6 +58,7 @@ void	expand_split(t_shell *shell, t_list **head, t_list **node);
 bool	ifs_delim(char c, const char *ifs);
 bool	ifs_whitespace(char c, const char *ifs);
 char	*make_temp_filename(int i);
+int		open_heredoc_file(const char *filename);
 
 // expander_var.c
 void	expand_variable(t_shell *shell, t_token *token);

@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 13:36:27 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/28 14:33:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/28 15:10:07 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,6 @@
 #include "lexer.h"
 #include "libft/libft.h"
 #include "minishell.h"
-
-// static t_token	*find_next_heredoc_token(t_list **redir_node)
-// {
-// 	t_token	*token;
-
-// 	while (*redir_node)
-// 	{
-// 		token = (*redir_node)->content;
-// 		if (token->type == TOKEN_HEREDOC)
-// 			return (token);
-// 		*redir_node = (*redir_node)->next;
-// 	}
-// 	return (0);
-// }
 
 static t_token	*find_next_heredoc_token(t_list *redir_node)
 {
@@ -48,14 +34,15 @@ static t_token	*find_next_heredoc_token(t_list *redir_node)
 	return (0);
 }
 
-static bool	process_heredoc(int i, const char *delim, t_token *token)
+static bool	process_heredoc(t_shell *shell, int i, const char *delim, \
+t_token *token)
 {
 	char	*temp_filename;
 
 	temp_filename = make_temp_filename(i);
 	if (!temp_filename)
 		return (false);
-	if (!collect_heredoc(delim, temp_filename))
+	if (!collect_heredoc(shell, delim, temp_filename))
 	{
 		free(temp_filename);
 		return (false);
@@ -65,6 +52,7 @@ static bool	process_heredoc(int i, const char *delim, t_token *token)
 	return (true);
 }
 
+// should delim be a token to track if quotes are used, or does it not matter?
 static void	process_ast_heredocs(t_shell *shell, t_ast *ast, int *i)
 {
 	char	*delim;
@@ -80,7 +68,7 @@ static void	process_ast_heredocs(t_shell *shell, t_ast *ast, int *i)
 		token = find_next_heredoc_token(redir_node);
 		if (!token)
 			flush_and_exit(shell, "find_next_heredoc_token", EXIT_FAILURE);
-		if (!process_heredoc((*i)++, delim, token))
+		if (!process_heredoc(shell, (*i)++, delim, token))
 			flush_and_exit(shell, "process_heredoc", EXIT_FAILURE);
 		delim_node = delim_node->next;
 		if (redir_node)
