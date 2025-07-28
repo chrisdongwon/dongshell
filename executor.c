@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:34:35 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 15:37:49 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/24 17:14:01 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 #include "ast.h"
 #include "executor.h"
+#include "expander.h"
 #include "minishell.h"
 
 static int	exec_subshell(t_shell *shell, t_ast *ast, bool in_pipeline)

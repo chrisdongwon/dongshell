@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:38:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 13:10:36 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/27 17:40:02 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ static void	init_expander(t_shell *shell)
 
 bool	expander(t_shell *shell)
 {
+	int	heredoc_index;
+
+	heredoc_index = 0;
 	init_expander(shell);
 	expand_ast(shell, shell->expander->ast);
 	if (shell->expander->sub_error)
@@ -80,7 +83,7 @@ bool	expander(t_shell *shell)
 		shell->last_exit_status = EXIT_FAILURE;
 		return (false);
 	}
-	prepare_heredocs(shell, shell->expander->ast);
+	prepare_heredocs(shell, shell->expander->ast, &heredoc_index);
 	if (shell->expander->sub_error)
 	{
 		shell->last_exit_status = EXIT_FAILURE;

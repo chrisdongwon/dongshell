@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:19:20 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/12 21:30:36 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/28 14:25:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "lexer.h"
 #include "libft/libft.h"
+#include "minishell.h"
+#include "expander.h"
 
 static int	open_heredoc_file(const char *filename)
 {

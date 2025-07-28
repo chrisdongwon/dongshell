@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:37:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 08:34:22 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/24 17:11:02 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ void	remove_empty_tokens(t_list **argv_list);
 
 // executor.c
 int		exec_ast(t_shell *shell, t_ast *ast, bool in_pipeline);
+int		shell_execute(t_shell *shell);
 
 #endif
