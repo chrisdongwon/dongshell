@@ -6,16 +6,20 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:51 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/19 22:25:45 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/29 13:18:54 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
 
 #include "ast.h"
 #include "libft/libft.h"
 #include "minishell.h"
 #include "parser.h"
+#include "envp.h"
 
 static bool	set_command_parts(t_shell *shell, t_parser *parser, t_ast *ast)
 {

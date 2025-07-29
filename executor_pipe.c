@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/20 00:21:49 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/29 12:56:14 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 #include "ast.h"
 #include "executor.h"
+#include "libft/libft.h"
 #include "minishell.h"
 #include "signal_handler.h"
 

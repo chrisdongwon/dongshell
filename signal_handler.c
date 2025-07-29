@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:37:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/21 15:17:41 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/28 15:55:35 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ static void	sigint_handler(int signo)
 {
 	(void)signo;
 	g_sig_flag = 1;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_on_new_line();
+	write(STDOUT_FILENO, "\n", STDOUT_FILENO);
 	rl_replace_line("", 0);
-	rl_redisplay();
+	rl_on_new_line();
 }
 
 static void	sigquit_handler(int signo)
