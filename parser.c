@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 19:59:08 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/29 13:19:10 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/29 14:51:25 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	parser(t_shell *shell)
 	shell->parser->ast = parse(shell);
 	if (shell->parser->syntax_error)
 	{
-		shell->last_exit_status = EXIT_FAILURE;
+		shell->last_exit_status = 2;
 		return (false);
 	}
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:51 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/29 13:18:54 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/29 15:01:22 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,43 @@ static t_ast	*parse_command(t_shell *shell)
 	return (ast);
 }
 
-t_ast	*parse_pipeline(t_shell *shell)
+static t_ast	*parse_pipe_operands(t_shell *shell, t_ast *left)
 {
-	t_ast		*left;
-	t_ast		*right;
 	t_ast		*ast;
+	t_ast		*right;
 	t_parser	*parser;
 
 	parser = shell->parser;
-	if (parser->syntax_error)
-		return (0);
-	left = parse_command(shell);
 	while (match(parser, TOKEN_PIPE))
 	{
 		right = parse_command(shell);
+		if (right && !right->argv_list && !right->redir_list)
+		{
+			parser->syntax_error = true;
+			return (0);
+		}
 		ast = new_ast(left, right, AST_PIPE);
 		if (!ast)
 			flush_and_exit(shell, "new_ast", EXIT_FAILURE);
 		left = ast;
 	}
 	return (left);
+}
+
+t_ast	*parse_pipeline(t_shell *shell)
+{
+	t_ast		*left;
+	t_parser	*parser;
+
+	parser = shell->parser;
+	if (parser->syntax_error)
+		return (0);
+	left = parse_command(shell);
+	if (left && !left->argv_list && !left->redir_list)
+	{
+		if (peek(parser) && peek(parser)->type == TOKEN_PIPE)
+			parser->syntax_error = true;
+		return (0);
+	}
+	return (parse_pipe_operands(shell, left));
 }

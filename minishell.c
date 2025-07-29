@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 00:17:46 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/29 13:20:25 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/29 14:55:43 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ false);
 			else
 				ft_putstr_fd("minishell: bad substitution\n", STDERR_FILENO);
 		}
-		// else
-		// 	shell.last_exit_status = 2;
+		else
+			ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 		flush_shell(&shell);
 	}
 }
