@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:31:18 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 09:10:42 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/30 13:17:52 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 #include "lexer.h"
 #include "libft/libft.h"
 #include "minishell.h"
+
+static bool	is_valid_identifier_unset(const char *key)
+{
+	if (!key || !*key)
+		return (false);
+	return (key[0] != '-' || !key[1]);
+}
 
 static void	unset_envp(t_shell *shell, const char *key)
 {
@@ -48,9 +55,9 @@ static void	unset_envp(t_shell *shell, const char *key)
 
 static bool	unset_arg(t_shell *shell, char *key)
 {
-	if (!is_valid_identifier(key))
+	if (!is_valid_identifier_unset(key))
 	{
-		ft_putstr_fd("unset: `", STDERR_FILENO);
+		ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
 		ft_putstr_fd(key, STDERR_FILENO);
 		ft_putstr_fd("`: not a valid identifier\n", STDERR_FILENO);
 		return (false);

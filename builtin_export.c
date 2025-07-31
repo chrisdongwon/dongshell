@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:20:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 14:25:35 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/31 10:12:01 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,31 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+static bool	is_valid_identifier_export(const char *key)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!key || !*key)
+		return (false);
+	while (key[i] && key[i] != '=')
+		i++;
+	if (!i || (!ft_isalpha(key[0]) && key[0] != '_'))
+		return (false);
+	j = 1;
+	while (j < i)
+	{
+		if (!ft_isalnum(key[j]) && key[j] != '_')
+			return (false);
+		j++;
+	}
+	return (true);
+}
+
 static int	export_key_only(t_shell *shell, char *key)
 {
-	if (!is_valid_identifier(key))
+	if (!is_valid_identifier_export(key))
 	{
 		ft_putstr_fd("export: `", STDERR_FILENO);
 		ft_putstr_fd(key, STDERR_FILENO);
@@ -43,7 +65,7 @@ static int	export_key_value(t_shell *shell, char *key_value)
 	equal = ft_strchr(key_value, '=');
 	key = ft_strndup(key_value, equal - key_value);
 	val = ft_strdup(equal + 1);
-	if (!is_valid_identifier(key))
+	if (!is_valid_identifier_export(key))
 	{
 		ft_putstr_fd("export: `", STDERR_FILENO);
 		ft_putstr_fd(key_value, STDERR_FILENO);

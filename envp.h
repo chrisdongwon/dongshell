@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:27:36 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 18:30:27 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/30 13:08:29 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	set_env(t_shell *shell, const char *key, const char *value, \
 bool exported);
 
 // envp_util.c
-bool	is_valid_identifier(const char *key);
 char	*get_envp_value(t_list *envp_list, const char *key);
 t_envp	*envp_to_node(t_shell *shell, const char *envp_str);
 t_envp	*new_envp(t_shell *shell, const char *key, const char *value, \

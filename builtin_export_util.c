@@ -6,12 +6,13 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:41:42 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 14:25:32 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/30 13:31:08 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "builtin.h"
 #include "envp.h"

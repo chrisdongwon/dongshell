@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:43:44 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 17:16:35 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/31 12:11:22 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,31 @@
 #include "envp.h"
 #include "libft/libft.h"
 #include "minishell.h"
+
+static void	append_oldpwd_envp(t_shell *shell)
+{
+	t_envp	*envp_node;
+	t_list	*list_node;
+
+	envp_node = ft_calloc(1, sizeof(t_envp));
+	if (!envp_node)
+		flush_and_exit(shell, "ft_calloc", EXIT_FAILURE);
+	envp_node->key = ft_strdup("OLDPWD");
+	if (!envp_node->key)
+	{
+		free_envp(envp_node);
+		flush_and_exit(shell, "ft_strdup", EXIT_FAILURE);
+	}
+	envp_node->value = 0;
+	envp_node->exported = true;
+	list_node = ft_lstnew(envp_node);
+	if (!list_node)
+	{
+		free_envp(envp_node);
+		flush_and_exit(shell, "ft_lstnew", EXIT_FAILURE);
+	}
+	ft_lstadd_back(&shell->envp_list, list_node);
+}
 
 t_envp	*get_envp(t_shell *shell, const char *key)
 {
@@ -44,16 +69,20 @@ void	free_envp(void *arg)
 
 void	init_envp(t_shell *shell, char **envp)
 {
+	bool	oldpwd_found;
 	size_t	i;
 	t_envp	*envp_node;
 	t_list	*list_node;
 
+	oldpwd_found = false;
 	if (!envp)
 		return ;
 	i = 0;
 	while (envp[i])
 	{
 		envp_node = envp_to_node(shell, envp[i++]);
+		if (envp_node->key && !ft_strcmp(envp_node->key, "OLDPWD"))
+			oldpwd_found = true;
 		list_node = ft_lstnew(envp_node);
 		if (!list_node)
 		{
@@ -62,4 +91,6 @@ void	init_envp(t_shell *shell, char **envp)
 		}
 		ft_lstadd_back(&shell->envp_list, list_node);
 	}
+	if (!oldpwd_found)
+		append_oldpwd_envp(shell);
 }
