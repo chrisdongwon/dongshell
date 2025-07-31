@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:51 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/29 15:01:22 by cwon             ###   ########.fr       */
+/*   Updated: 2025/07/31 13:10:08 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ t_ast	*parse_pipeline(t_shell *shell)
 	{
 		if (peek(parser) && peek(parser)->type == TOKEN_PIPE)
 			parser->syntax_error = true;
+		free_ast(left);
 		return (0);
 	}
 	return (parse_pipe_operands(shell, left));
