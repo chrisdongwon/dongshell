@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:55:32 by cwon              #+#    #+#             */
-/*   Updated: 2025/08/03 10:57:53 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 16:20:20 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,20 @@ t_ast	*parse_and_or(t_shell *shell);
 
 /* ================= parser_pipeline.c ================= */
 /**
+ * @brief Parse the parts of a command into an AST node.
+ *
+ * Reads tokens from the parser and populates the AST with
+ * arguments and redirections until no more valid tokens remain.
+ *
+ * @param shell  Pointer to the shell instance.
+ * @param parser Pointer to the parser state.
+ * @param ast    Pointer to the AST command node to populate.
+ *
+ * @return true if parsing succeeded, false on syntax error.
+ */
+bool	set_command_parts(t_shell *shell, t_parser *parser, t_ast *ast);
+
+/**
  * @brief Parse a command pipeline into an AST.
  * @param shell Pointer to the shell instance.
  * @return Pointer to the root AST node for the pipeline.
@@ -91,6 +105,18 @@ bool	validate_redir(t_shell *shell, t_ast *ast);
  */
 void	process_redir(t_shell *shell, t_ast *ast, t_token *token, \
 t_token_type type);
+
+/* ================= parser_subshell.c ================= */
+/**
+ * @brief Parse a subshell command.
+ *
+ * Parses commands enclosed in parentheses and returns an AST
+ * node of type AST_SUBSHELL.
+ *
+ * @param shell Pointer to the shell instance.
+ * @return Pointer to the AST node, or NULL on error.
+ */
+t_ast	*parse_subshell(t_shell *shell);
 
 /* ================= parser_util.c ================= */
 /**

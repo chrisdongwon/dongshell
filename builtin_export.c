@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:20:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/08/03 15:42:30 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 16:25:43 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static bool	is_valid_identifier_export(const char *key)
 // 	return (EXIT_SUCCESS);
 // }
 
-static int export_key_only(t_shell *shell, char *key)
+static int	export_key_only(t_shell *shell, char *key)
 {
 	if (!is_valid_identifier_export(key))
 	{

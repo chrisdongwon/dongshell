@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/08/03 11:40:29 by cwon             ###   ########.fr        #
+#    Updated: 2025/08/03 16:26:47 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ SRC = \
 	parser_binary.c \
 	parser_pipeline.c \
 	parser_redir.c \
+	parser_subshell.c \
 	parser_util.c \
 	parser.c \
 	signal_handler.c
