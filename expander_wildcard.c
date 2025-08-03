@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:38:21 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 13:51:29 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:13:52 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Match a string against a wildcard pattern.
+ *
+ * Supports '*' wildcard matching zero or more characters.
+ *
+ * @param pattern The wildcard pattern string.
+ * @param string  The string to match against the pattern.
+ * @return true if the string matches the pattern, false otherwise.
+ */
 static bool	match_wildcard(const char *pattern, const char *string)
 {
 	while (*pattern)
@@ -46,6 +55,17 @@ static bool	match_wildcard(const char *pattern, const char *string)
 	return (!*string);
 }
 
+/**
+ * @brief Report an ambiguous redirect error and clear expanded tokens.
+ *
+ * Prints an error message to stderr for ambiguous redirect caused by
+ * wildcard expansion, clears the expanded token list, and sets the
+ * substitution error flag in the shell expander state.
+ *
+ * @param shell    Pointer to the shell state.
+ * @param expanded Pointer to the list of expanded tokens to clear.
+ * @param token    The token causing the ambiguous redirect.
+ */
 static void	ambiguous_redirect(t_shell *shell, t_list **expanded, \
 t_token *token)
 {
@@ -56,6 +76,17 @@ t_token *token)
 	shell->expander->sub_error = true;
 }
 
+/**
+ * @brief Append a matched filename as a new token to the matches list.
+ *
+ * Allocates a new token for the matched filename and appends it to
+ * the matches list. On failure, clears the list and exits.
+ *
+ * @param shell      Pointer to the shell state.
+ * @param matches    Pointer to the list of matching tokens.
+ * @param filename   The matched filename string.
+ * @param token_type The token type for the new token.
+ */
 static void	try_append_match(t_shell *shell, t_list **matches, \
 const char *filename, t_token_type token_type)
 {

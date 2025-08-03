@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 13:36:27 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/28 15:10:07 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:17:19 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Find the next heredoc token in a redirection list.
+ *
+ * Iterates through the given linked list of redirection tokens and returns
+ * the first token of type TOKEN_HEREDOC found.
+ *
+ * @param redir_node Pointer to the head of the redirection token list.
+ * @return Pointer to the next heredoc token if found, NULL otherwise.
+ */
 static t_token	*find_next_heredoc_token(t_list *redir_node)
 {
 	t_token	*token;
@@ -34,6 +43,19 @@ static t_token	*find_next_heredoc_token(t_list *redir_node)
 	return (0);
 }
 
+/**
+ * @brief Process a heredoc by collecting input into a temporary file.
+ *
+ * Creates a temporary filename based on the given index and collects
+ * heredoc input using the given delimiter. Replaces the token's value
+ * with the temporary filename on success.
+ *
+ * @param shell Pointer to the shell state.
+ * @param i     Index used for generating a unique temporary filename.
+ * @param delim The heredoc delimiter string.
+ * @param token Pointer to the heredoc token whose value will be replaced.
+ * @return true if heredoc processing succeeded, false otherwise.
+ */
 static bool	process_heredoc(t_shell *shell, int i, const char *delim, \
 t_token *token)
 {
@@ -52,7 +74,17 @@ t_token *token)
 	return (true);
 }
 
-// should delim be a token to track if quotes are used, or does it not matter?
+/**
+ * @brief Process all heredocs in an abstract syntax tree (AST).
+ *
+ * Iterates over the AST's heredoc delimiters and corresponding redirections,
+ * processing each heredoc by collecting input and replacing token values
+ * with temporary filenames.
+ *
+ * @param shell Pointer to the shell state.
+ * @param ast   Pointer to the AST node containing heredoc information.
+ * @param i     Pointer to an integer index used to generate unique filenames.
+ */
 static void	process_ast_heredocs(t_shell *shell, t_ast *ast, int *i)
 {
 	char	*delim;

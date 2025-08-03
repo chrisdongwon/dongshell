@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:38:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/27 17:40:02 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:12:54 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,19 @@
 #include "minishell.h"
 #include "parser.h"
 
+/**
+ * @brief Expand variables and wildcards in a token list.
+ *
+ * Iterates over the token list, expands shell variables in tokens not
+ * quoted by single quotes. If the token is part of argv and IFS is set,
+ * performs field splitting. After variable expansion, performs wildcard
+ * expansion on the list unless a substitution error occurred.
+ *
+ * @param shell  Pointer to the shell state.
+ * @param list   Pointer to the list of tokens to expand.
+ * @param is_argv Indicates if the list represents argv tokens (true) or
+ *                redirections (false).
+ */
 static void	expand_list(t_shell *shell, t_list **list, bool is_argv)
 {
 	t_list	*node;
@@ -42,6 +55,16 @@ static void	expand_list(t_shell *shell, t_list **list, bool is_argv)
 		expand_wildcard_list(shell, list, is_argv);
 }
 
+/**
+ * @brief Recursively expand all tokens in the AST.
+ *
+ * Expands variable and wildcard tokens in command argument and
+ * redirection lists of the AST nodes. Recurses into left and right
+ * child nodes for compound commands.
+ *
+ * @param shell Pointer to the shell state.
+ * @param ast   Pointer to the AST node to expand.
+ */
 static void	expand_ast(t_shell *shell, t_ast *ast)
 {
 	if (!ast)
@@ -57,6 +80,16 @@ static void	expand_ast(t_shell *shell, t_ast *ast)
 	expand_ast(shell, ast->right);
 }
 
+/**
+ * @brief Initialize the expander state in the shell.
+ *
+ * Allocates and initializes the expander structure with references
+ * to the current AST, environment variables, last exit status, and
+ * sets the IFS value from the environment or defaults to space,
+ * tab, and newline if unset.
+ *
+ * @param shell Pointer to the shell state.
+ */
 static void	init_expander(t_shell *shell)
 {
 	shell->expander = malloc(sizeof(t_expander));
@@ -90,4 +123,10 @@ bool	expander(t_shell *shell)
 		return (false);
 	}
 	return (true);
+}
+
+void	flush_expander(t_shell *shell)
+{
+	free(shell->expander);
+	shell->expander = 0;
 }

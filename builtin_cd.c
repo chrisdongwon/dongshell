@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:31:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/19 21:56:09 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:44:55 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Handle `cd -` by retrieving and printing the OLDPWD value.
+ *
+ * This function fetches the value of the `OLDPWD` environment variable
+ * from the shell environment and prints it to `STDOUT`. If `OLDPWD`
+ * is not set, an error message is printed to `STDERR`.
+ *
+ * @param shell Pointer to the shell state.
+ * @return const char* The `OLDPWD` value, or NULL if not set.
+ */
 static const char	*handle_oldpwd(t_shell *shell)
 {
 	t_envp		*oldpwd;
@@ -34,6 +44,18 @@ static const char	*handle_oldpwd(t_shell *shell)
 	return (oldpwd->value);
 }
 
+/**
+ * @brief Determine the target directory for the `cd` command.
+ *
+ * This function checks the first argument after `cd`. If no argument
+ * is given, it uses the `HOME` environment variable. If the argument
+ * is `-`, it calls `handle_oldpwd()` to retrieve `OLDPWD`. Otherwise,
+ * it returns the argument as the target path.
+ *
+ * @param shell     Pointer to the shell state.
+ * @param argv_list List of command arguments.
+ * @return const char* The target path for `cd`, or NULL on error.
+ */
 static const char	*cd_get_target(t_shell *shell, t_list *argv_list)
 {
 	const char	*argv_1;
@@ -55,6 +77,16 @@ static const char	*cd_get_target(t_shell *shell, t_list *argv_list)
 	return (argv_1);
 }
 
+/**
+ * @brief Get the current working directory.
+ *
+ * This function calls `getcwd()` to retrieve the absolute path of the
+ * current working directory. If the call fails, it prints an error
+ * message.
+ *
+ * @return char* The current working directory path, or NULL on failure.
+ *               The returned string must be freed by the caller.
+ */
 static char	*cd_get_cwd(void)
 {
 	char	*cwd;

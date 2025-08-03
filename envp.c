@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:43:44 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/31 12:11:22 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/01 15:39:42 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,21 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @internal
+ * @brief Appends an OLDPWD environment variable to the shell's list.
+ *
+ * Allocates and initializes a new environment variable node for
+ * "OLDPWD" with no value, marked as exported. The new variable is
+ * appended to the shell's environment list. If any allocation fails,
+ * the function calls flush_and_exit() to clean up and terminate.
+ *
+ * @param shell Pointer to the shell state.
+ *
+ * @note This function is intended for internal use during shell
+ *       initialization to ensure OLDPWD exists even if not inherited
+ *       from the parent environment.
+ */
 static void	append_oldpwd_envp(t_shell *shell)
 {
 	t_envp	*envp_node;

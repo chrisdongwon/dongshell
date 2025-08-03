@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:16:14 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 20:49:29 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:25:08 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Frees an array of argument strings and exits the shell on failure.
+ *
+ * Frees each string in the argument array and then frees the array itself.
+ * After freeing, the shell is terminated with an error message indicating
+ * a failure related to string duplication.
+ *
+ * @param shell Pointer to the shell state.
+ * @param arr   Array of argument strings to free.
+ * @param n     Number of strings in the array.
+ */
 static void	free_argv_arr(t_shell *shell, char **arr, size_t n)
 {
 	while (n)

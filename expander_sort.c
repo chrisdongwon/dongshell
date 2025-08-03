@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:05:58 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 16:02:52 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:16:29 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 #include "lexer.h"
 #include "libft/libft.h"
 
+/**
+ * @brief Split a linked list into two halves.
+ *
+ * Uses the fast/slow pointer strategy to split the given linked list into two
+ * roughly equal halves. The front half is assigned to *front, and the back half
+ * to *back. The original list is modified by terminating the front half.
+ *
+ * @param list  The original linked list to split.
+ * @param front Pointer to store the front half of the list.
+ * @param back  Pointer to store the back half of the list.
+ */
 static void	split_list(t_list *list, t_list **front, t_list **back)
 {
 	t_list	*slow;
@@ -33,6 +44,16 @@ static void	split_list(t_list *list, t_list **front, t_list **back)
 		(*back)->prev = 0;
 }
 
+/**
+ * @brief Compare the string values of two tokens.
+ *
+ * Compares the 'value' fields of the tokens contained in two linked list nodes
+ * using string comparison. Used for sorting or ordering tokens.
+ *
+ * @param a First list node containing a token.
+ * @param b Second list node containing a token.
+ * @return  Negative, zero, or positive integer depending on lexical order.
+ */
 static int	compare_token_values(t_list *a, t_list *b)
 {
 	t_token	*token_a;

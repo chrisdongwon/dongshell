@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:37:11 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/28 15:55:35 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 10:41:32 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 
 volatile sig_atomic_t	g_sig_flag = 0;
 
+/**
+ * @brief Handle SIGINT (Ctrl-C) signal in the shell.
+ *
+ * Sets the global signal flag, writes a newline to stdout, and resets
+ * the Readline input buffer so the prompt is redisplayed cleanly.
+ *
+ * @param signo Signal number (unused).
+ */
 static void	sigint_handler(int signo)
 {
 	(void)signo;
@@ -30,6 +38,13 @@ static void	sigint_handler(int signo)
 	rl_on_new_line();
 }
 
+/**
+ * @brief Handle SIGQUIT (Ctrl-\) signal in the shell.
+ *
+ * This handler currently ignores the signal.
+ *
+ * @param signo Signal number (unused).
+ */
 static void	sigquit_handler(int signo)
 {
 	(void)signo;

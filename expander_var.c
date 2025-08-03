@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:15:09 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/28 14:25:41 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:14:45 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Extract a variable name from a string after a '$'.
+ *
+ * If the variable is enclosed in braces { }, extracts the substring inside.
+ * Otherwise, extracts alphanumeric or underscore characters as the variable.
+ * Sets substitution error flag on invalid syntax.
+ *
+ * @param shell Pointer to the shell state.
+ * @param str   Pointer to the string starting after '$'.
+ * @return Allocated string containing the variable name, or NULL on error.
+ */
 static char	*extract_var(t_shell *shell, const char *str)
 {
 	char	*end;
@@ -27,7 +38,7 @@ static char	*extract_var(t_shell *shell, const char *str)
 	if (str[0] == '{')
 	{
 		end = ft_strchr(str, '}');
-		if (!end)
+		if (!end || end == str + 1)
 		{
 			shell->expander->sub_error = true;
 			return (0);
@@ -46,6 +57,16 @@ static char	*extract_var(t_shell *shell, const char *str)
 	return (result);
 }
 
+/**
+ * @brief Expand the special variable $? representing last exit status.
+ *
+ * Converts the last exit status to a string and appends it to the result.
+ *
+ * @param shell  Pointer to the shell state.
+ * @param result Pointer to the string being built.
+ * @param pos    Position in the input string of the '$?' sequence.
+ * @return Pointer to the next character after the expanded variable in input.
+ */
 static const char	*expand_exit_status(t_shell *shell, t_string *result, \
 const char *pos)
 {
@@ -60,6 +81,18 @@ const char *pos)
 	return (pos + 2);
 }
 
+/**
+ * @brief Expand an environment variable at the current input position.
+ *
+ * Extracts the variable name, retrieves its value from environment, appends
+ * value to the result string. Handles both ${VAR} and $VAR syntax.
+ *
+ * @param shell  Pointer to the shell state.
+ * @param result Pointer to the string being built.
+ * @param pos    Position in the input string of the '$' character.
+ * @return Pointer to the next character after the expanded variable, or NULL
+ *         if a substitution error occurred.
+ */
 static const char	*expand_variable_at(t_shell *shell, t_string *result,
 const char *pos)
 {
@@ -78,11 +111,25 @@ const char *pos)
 		val = "";
 	if (!append_string(result, val))
 		flush_and_exit(shell, "append_string", EXIT_FAILURE);
-	next = pos + 1 + ft_strlen(var);
+	if (pos[1] == '{')
+		next = ft_strchr(pos + 2, '}') + 1;
+	else
+		next = pos + 1 + ft_strlen(var);
 	free(var);
 	return (next);
 }
 
+/**
+ * @brief Append characters and expand variables from current to dollar sign.
+ *
+ * Copies characters from *current up to the '$' character, then performs
+ * variable expansion depending on the character following '$'.
+ *
+ * @param shell  Pointer to the shell state.
+ * @param result Pointer to the string being built.
+ * @param current Pointer to the current position pointer in input string.
+ * @param dollar Pointer to the position of the '$' character in input.
+ */
 static void	append_var(t_shell *shell, t_string *result, const char **current, \
 const char *dollar)
 {

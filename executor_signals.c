@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:56:57 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/21 15:19:21 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:25:58 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@
 
 #include "executor.h"
 
+/**
+ * @brief Ignore SIGINT and SIGQUIT signals in the parent process.
+ *
+ * Sets the signal handlers for SIGINT and SIGQUIT to SIG_IGN (ignore),
+ * saving the old signal actions in the provided pointers for later restoration.
+ *
+ * @param old_int  Pointer to store the old SIGINT signal action.
+ * @param old_quit Pointer to store the old SIGQUIT signal action.
+ */
 static void	ignore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit)
 {
 	t_sigaction	sa;
@@ -30,6 +39,15 @@ static void	ignore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit)
 	sigaction(SIGQUIT, &sa, old_quit);
 }
 
+/**
+ * @brief Restore the original SIGINT and SIGQUIT signal handlers in the parent.
+ *
+ * Restores the signal handlers for SIGINT and SIGQUIT from the saved
+ * old signal actions.
+ *
+ * @param old_int  Pointer to the old SIGINT signal action to restore.
+ * @param old_quit Pointer to the old SIGQUIT signal action to restore.
+ */
 static void	restore_parent_signals(t_sigaction *old_int, t_sigaction *old_quit)
 {
 	sigaction(SIGINT, old_int, 0);

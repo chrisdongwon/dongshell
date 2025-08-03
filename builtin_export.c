@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:20:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/31 10:12:01 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:48:54 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Validate if a key is a valid export identifier.
+ *
+ * Checks if the given key is a valid environment variable name according
+ * to shell rules: must start with an alphabetic character or underscore,
+ * followed by alphanumeric characters or underscores, and optionally
+ * followed by '=' and a value.
+ *
+ * @param key The string to validate.
+ * @return true if the identifier is valid, false otherwise.
+ */
 static bool	is_valid_identifier_export(const char *key)
 {
 	size_t	i;
@@ -41,6 +52,16 @@ static bool	is_valid_identifier_export(const char *key)
 	return (true);
 }
 
+/**
+ * @brief Export an environment variable key without a value.
+ *
+ * Validates the key and adds it to the environment with a NULL value
+ * and the exported flag set. If invalid, prints an error message.
+ *
+ * @param shell Pointer to the shell state.
+ * @param key   The variable name to export.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE on invalid identifier.
+ */
 static int	export_key_only(t_shell *shell, char *key)
 {
 	if (!is_valid_identifier_export(key))
@@ -54,6 +75,17 @@ static int	export_key_only(t_shell *shell, char *key)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief Export an environment variable with a value.
+ *
+ * Splits the "key=value" string, validates the key, and adds the key/value
+ * pair to the environment with the exported flag set. Prints an error if
+ * the key is invalid.
+ *
+ * @param shell     Pointer to the shell state.
+ * @param key_value String containing the key and value in "key=value" format.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE on invalid identifier.
+ */
 static int	export_key_value(t_shell *shell, char *key_value)
 {
 	char	*equal;
@@ -79,6 +111,16 @@ static int	export_key_value(t_shell *shell, char *key_value)
 	return (exit_status);
 }
 
+/**
+ * @brief Handle an export command argument.
+ *
+ * Determines whether the argument is in "key=value" format or just "key"
+ * and calls the appropriate export handler.
+ *
+ * @param shell Pointer to the shell state.
+ * @param token Token containing the export argument.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE if invalid identifier.
+ */
 static int	handle_export_arg(t_shell *shell, t_token *token)
 {
 	if (ft_strchr(token->value, '='))

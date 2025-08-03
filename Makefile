@@ -6,7 +6,7 @@
 #    By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 23:18:05 by cwon              #+#    #+#              #
-#    Updated: 2025/07/30 15:22:25 by cwon             ###   ########.fr        #
+#    Updated: 2025/08/03 11:40:29 by cwon             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ SRC = \
 	builtin_env.c \
 	builtin_exit_util.c \
 	builtin_exit.c \
-	builtin_export_sort.c \
 	builtin_export_util.c \
 	builtin_export.c \
 	builtin_pwd.c \
@@ -44,6 +43,7 @@ SRC = \
 	builtin_util.c \
 	envp_array.c \
 	envp_set.c \
+	envp_sort.c \
 	envp_util.c \
 	envp.c \
 	executor_builtin.c \
@@ -68,12 +68,13 @@ SRC = \
 	lexer_token.c \
 	lexer.c \
 	minishell_print.c \
+	minishell_prompt.c \
 	minishell.c \
+	parser_binary.c \
 	parser_pipeline.c \
 	parser_redir.c \
 	parser_util.c \
 	parser.c \
-	prompt.c \
 	signal_handler.c
 MAIN = main.c
 OBJ = $(SRC:.c=.o) $(MAIN:.c=.o)

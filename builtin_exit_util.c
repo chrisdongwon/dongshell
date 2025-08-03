@@ -6,13 +6,24 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 07:55:19 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/13 14:24:43 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:46:46 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "libft/libft.h"
 
+/**
+ * @brief Skip optional sign and check if the next character is a digit.
+ *
+ * This function advances the input string pointer past an optional '+' or '-'
+ * sign and updates the `negative` flag accordingly. It then checks if the
+ * next character is a valid digit.
+ *
+ * @param str       Pointer to the string pointer to process.
+ * @param negative  Pointer to a boolean flag set to true if the sign is '-'.
+ * @return true if the next character is a digit, false otherwise.
+ */
 static bool	skip_sign_and_validate(const char **str, bool *negative)
 {
 	*negative = false;
@@ -26,6 +37,15 @@ static bool	skip_sign_and_validate(const char **str, bool *negative)
 	return (ft_isdigit((unsigned char)**str));
 }
 
+/**
+ * @brief Count the number of consecutive digit characters in a string.
+ *
+ * Iterates through the string starting from `str` and counts the number of
+ * consecutive numeric characters until a non-digit is found.
+ *
+ * @param str  Pointer to the string to inspect.
+ * @return Number of consecutive digits at the start of the string.
+ */
 static size_t	count_digits(const char *str)
 {
 	size_t	len;
@@ -36,6 +56,16 @@ static size_t	count_digits(const char *str)
 	return (len);
 }
 
+/**
+ * @brief Compare a numeric string with a numeric limit string.
+ *
+ * Compares the first 19 characters of `start` with `limit` to determine if
+ * `start` is less than or equal to `limit` in lexicographical order.
+ *
+ * @param start  The numeric string to compare.
+ * @param limit  The numeric limit string for comparison.
+ * @return true if `start` is less than or equal to `limit`, false otherwise.
+ */
 static bool	compare_with_limit(const char *start, const char *limit)
 {
 	size_t	i;

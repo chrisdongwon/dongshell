@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:34:35 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/24 17:14:01 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:24:33 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@
 #include "expander.h"
 #include "minishell.h"
 
+/**
+ * @brief Executes a subshell command represented by an AST node.
+ *
+ * This function forks a new process to execute the subshell command
+ * (AST node's left child) and waits for its completion. The exit
+ * status of the subshell is returned.
+ *
+ * @param shell Pointer to the shell state.
+ * @param ast   AST node representing the subshell command.
+ * @param in_pipeline True if this subshell is part of a pipeline.
+ * @return Exit status code of the subshell command, or EXIT_FAILURE on error.
+ */
 static int	exec_subshell(t_shell *shell, t_ast *ast, bool in_pipeline)
 {
 	int		status;
@@ -65,4 +77,9 @@ int	exec_ast(t_shell *shell, t_ast *ast, bool in_pipeline)
 	if (ast->type == AST_SUBSHELL)
 		return (exec_subshell(shell, ast, in_pipeline));
 	return (EXIT_FAILURE);
+}
+
+void	execute_command(t_shell *shell)
+{
+	shell->last_exit_status = exec_ast(shell, shell->expander->ast, false);
 }

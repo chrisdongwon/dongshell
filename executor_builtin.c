@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:37:33 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/21 15:16:40 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:30:57 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@
 #include "libft/libft.h"
 #include "signal_handler.h"
 
+/**
+ * @brief Execute a builtin command.
+ *
+ * Compares the command string with known builtins and calls the corresponding
+ * builtin function. Returns the builtin's return code, or EXIT_FAILURE if the
+ * command is not a builtin.
+ *
+ * @param shell     Pointer to the shell state.
+ * @param argv_list List of command arguments (tokens).
+ * @return Exit status code from the builtin command or EXIT_FAILURE if unknown.
+ */
 static int	exec_builtin(t_shell *shell, t_list *argv_list)
 {
 	char	*cmd;
@@ -45,6 +56,17 @@ static int	exec_builtin(t_shell *shell, t_list *argv_list)
 	return (EXIT_FAILURE);
 }
 
+/**
+ * @brief Handle execution of a builtin command in a pipeline child process.
+ *
+ * Forks a new process to run the builtin. In the child process, resets signal
+ * handlers, applies redirections, and executes the builtin. The parent process
+ * handles the child signals.
+ *
+ * @param shell Pointer to the shell state.
+ * @param ast   AST node containing the builtin command.
+ * @return Exit status from the child process or EXIT_FAILURE if fork fails.
+ */
 static int	handle_pipeline(t_shell *shell, t_ast *ast)
 {
 	pid_t	pid;

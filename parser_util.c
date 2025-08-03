@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:20:10 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/19 22:26:26 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 09:10:07 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ bool	match(t_parser *parser, t_token_type type)
 		advance(parser);
 		return (true);
 	}
+	return (false);
+}
+
+bool	parser_syntax_error(t_parser *parser)
+{
+	parser->syntax_error = true;
 	return (false);
 }
 

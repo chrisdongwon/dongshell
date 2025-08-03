@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 18:37:19 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 15:20:38 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:26:55 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@
 #include "signal_handler.h"
 #include "expander.h"
 
+/**
+ * @brief Print an error message related to redirection failure.
+ *
+ * Prints a descriptive error message to STDERR based on the current errno
+ * value for the given filename.
+ *
+ * @param filename The filename involved in the redirection error.
+ */
 static void	print_redir_error(const char *filename)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -39,6 +47,18 @@ static void	print_redir_error(const char *filename)
 		perror(filename);
 }
 
+/**
+ * @brief Redirect standard input from a file.
+ *
+ * Opens the specified filename for reading and duplicates its file descriptor
+ * onto STDIN_FILENO. If is_heredoc is true, the file is unlinked after opening.
+ *
+ * On failure, prints an error message and exits.
+ *
+ * @param shell      Pointer to shell context, used for error handling.
+ * @param filename   The input filename to redirect from.
+ * @param is_heredoc Whether this input is from a heredoc temporary file.
+ */
 static void	redirect_input(t_shell *shell, const char *filename, \
 bool is_heredoc)
 {
@@ -60,6 +80,18 @@ bool is_heredoc)
 	close(fd);
 }
 
+/**
+ * @brief Redirect standard output to a file.
+ *
+ * Opens the specified filename with given flags for writing and duplicates
+ * its file descriptor onto STDOUT_FILENO.
+ *
+ * On failure, prints an error message and exits.
+ *
+ * @param shell    Pointer to shell context, used for error handling.
+ * @param filename The output filename to redirect to.
+ * @param flags    Flags to control opening mode (e.g., O_TRUNC or O_APPEND).
+ */
 static void	redirect_output(t_shell *shell, const char *filename, int flags)
 {
 	int	fd;

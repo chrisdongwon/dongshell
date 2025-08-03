@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 08:35:24 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 20:40:14 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 10:53:34 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
-// delete after testing
-void	print_token(void *arg)
-{
-	t_token	*token;
-
-	token = (t_token *)arg;
-	printf(" [%s]", token->value);
-}
-
-// delete after testing
-const char	*token_type_str(t_token_type type)
+/**
+ * @brief Convert a token type to its string representation.
+ *
+ * Maps a token type enum value to a corresponding string for
+ * debugging and display purposes.
+ *
+ * @param type The token type to convert.
+ * @return A constant string representing the token type. If the
+ *         type is unrecognized, returns "UNKNOWN_TOKEN_TYPE".
+ */
+static const char	*token_type_str(t_token_type type)
 {
 	if (type == TOKEN_AND)
 		return ("TOKEN_AND");
@@ -56,6 +56,16 @@ const char	*token_type_str(t_token_type type)
 	return ("UNKNOWN_TOKEN_TYPE");
 }
 
+/**
+ * @brief Print details of a command AST node.
+ *
+ * Displays the command's arguments and any redirections with
+ * indentation for readability. Uses token_type_str() to display
+ * redirection types as strings.
+ *
+ * @param ast    Pointer to the AST node of type AST_COMMAND.
+ * @param indent Indentation level for pretty-printing output.
+ */
 static void	print_command(t_ast *ast, int indent)
 {
 	int		j;
@@ -80,7 +90,14 @@ static void	print_command(t_ast *ast, int indent)
 	}
 }
 
-// delete after testing
+void	print_token(void *arg)
+{
+	t_token	*token;
+
+	token = (t_token *)arg;
+	printf(" [%s]", token->value);
+}
+
 void	print_ast(t_ast *ast, int indent)
 {
 	int	i;

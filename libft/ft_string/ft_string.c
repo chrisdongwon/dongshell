@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:56:17 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 17:14:30 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 10:35:04 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,29 @@
 #include "../libft.h"
 #include "ft_string.h"
 
+/**
+ * @brief Double the capacity of a dynamic string until it meets a minimum 
+ *        requirement.
+ *
+ * This function increases the capacity of the given dynamic string `str`
+ * by repeatedly doubling it until it is at least `min_capacity`. The buffer
+ * is reallocated using `ft_str_realloc`, preserving its current contents.
+ * 
+ * If the reallocation fails, the string is freed via `free_string()` and
+ * the function returns `false`.
+ *
+ * @param str          Pointer to the dynamic string whose capacity should be
+ *                     increased.
+ * @param min_capacity The minimum capacity required after resizing.
+ *
+ * @return `true` if the buffer was successfully reallocated, `false` if memory
+ *         allocation failed (in which case the string is freed).
+ *
+ * @note The `min_capacity` is compared against the current `capacity` field, 
+ *       not the string's current size.
+ * @warning On failure, the dynamic string becomes empty and its buffer is 
+ *          freed.
+ */
 static bool	double_capacity(t_string *str, size_t min_capacity)
 {
 	size_t	new_capacity;

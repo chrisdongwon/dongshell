@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:41:12 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/16 15:33:15 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 10:38:50 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,20 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Combine a key and value into a "key=value" string.
+ *
+ * Allocates and returns a new string consisting of the given key,
+ * an '=' character, and the given value. The resulting string is
+ * null-terminated.
+ *
+ * @param key   Null-terminated key string.
+ * @param value Null-terminated value string (can be empty but not NULL).
+ *
+ * @return Newly allocated "key=value" string, or NULL if allocation fails.
+ *
+ * @note Caller is responsible for freeing the returned string.
+ */
 static char	*combine_key_value(const char *key, const char *value)
 {
 	char	*result;
@@ -35,6 +49,16 @@ static char	*combine_key_value(const char *key, const char *value)
 	return (result);
 }
 
+/**
+ * @brief Count the number of exported environment variables.
+ *
+ * Iterates through the given linked list of environment variables
+ * and counts how many have the `exported` flag set.
+ *
+ * @param node Pointer to the first node of the environment list.
+ *
+ * @return Number of exported variables.
+ */
 static size_t	count_exported(t_list *node)
 {
 	size_t	count;
@@ -51,6 +75,18 @@ static size_t	count_exported(t_list *node)
 	return (count);
 }
 
+/**
+ * @brief Free an array of environment variable strings and exit.
+ *
+ * Frees each string in the given array, then frees the array itself.
+ * Calls `flush_and_exit()` with the given shell pointer.
+ *
+ * @param shell Pointer to the shell instance.
+ * @param arr   Array of strings to free.
+ * @param n     Number of strings in the array.
+ *
+ * @warning This function terminates the program via `flush_and_exit()`.
+ */
 static void	free_envp_arr(t_shell *shell, char **arr, size_t n)
 {
 	while (n)

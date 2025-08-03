@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:19:20 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/28 15:31:37 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:18:29 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Reads a single line of heredoc input from standard input.
+ *
+ * Prints the heredoc prompt "> " to stdout and reads a line from stdin.
+ * If the line ends with a newline character, it is removed.
+ *
+ * @param line Pointer to a string pointer where the read line will be stored.
+ * @return true if a line was successfully read, false if EOF or error.
+ */
 static bool	read_heredoc_line(char **line)
 {
 	size_t	len;
@@ -34,6 +43,15 @@ static bool	read_heredoc_line(char **line)
 	return (true);
 }
 
+/**
+ * @brief Strips matching wrapping quotes from a heredoc input line.
+ *
+ * If the input line starts and ends with matching single or double quotes,
+ * those quotes are removed from the string in-place.
+ *
+ * @param line The heredoc input line to process.
+ * @return The quote character that was stripped ('\'' or '\"'), or 0 if none.
+ */
 static char	strip_wrapping_quotes(char *line)
 {
 	char	quote;
@@ -51,6 +69,17 @@ line[len - 1] == line[0])
 	return (0);
 }
 
+/**
+ * @brief Writes a processed heredoc line to the given file descriptor.
+ *
+ * Strips wrapping quotes from the line, expands shell variables,
+ * then writes the expanded line followed by a newline to the file descriptor.
+ *
+ * @param shell Pointer to the shell state for variable expansion.
+ * @param fd    File descriptor to write the heredoc line to.
+ * @param line  The heredoc input line to write.
+ * @return true on successful write, false on failure.
+ */
 static bool	write_heredoc_line(t_shell *shell, int fd, char *line)
 {
 	char	quote;
@@ -75,6 +104,17 @@ write(fd, "\n", 1) == -1)
 	return (true);
 }
 
+/**
+ * @brief Collects heredoc input lines until a delimiter is encountered.
+ *
+ * Repeatedly reads lines from stdin and writes them to the file descriptor
+ * until the line matches the delimiter string or an error occurs.
+ *
+ * @param shell  Pointer to the shell state.
+ * @param result Pointer to a boolean flag set to false on error or EOF.
+ * @param fd     File descriptor to write the heredoc input to.
+ * @param delim  The heredoc delimiter string indicating end of input.
+ */
 static void	collect_heredoc_loop(t_shell *shell, bool *result, int fd, \
 const char *delim)
 {

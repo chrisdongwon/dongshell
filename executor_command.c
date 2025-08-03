@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:07:10 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/22 20:48:30 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:30:22 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/**
+ * @brief Get the full executable path for a command.
+ *
+ * If the command contains a slash, returns a duplicate of the command string.
+ * Otherwise, searches the directories in the PATH environment variable to
+ * find the full path to the executable.
+ *
+ * @param shell Pointer to the shell structure.
+ * @param argv  List of command arguments, where the first argument is the 
+ *              command.
+ * @param envp  List of environment variables.
+ * @return Newly allocated string with the full command path, or NULL if not 
+ *         found.
+ */
 static char	*get_command_path(t_shell *shell, t_list *argv, t_list *envp)
 {
 	char	**paths;
@@ -53,6 +67,15 @@ static char	*get_command_path(t_shell *shell, t_list *argv, t_list *envp)
 	return (result);
 }
 
+/**
+ * @brief Print error and exit when a command is not found.
+ *
+ * Prints an error message indicating that the command was not found
+ * and terminates the shell with exit code 127.
+ *
+ * @param shell Pointer to the shell structure.
+ * @param ast   AST node containing the command.
+ */
 static void	command_not_found(t_shell *shell, t_ast *ast)
 {
 	t_token	*token;
@@ -64,6 +87,19 @@ static void	command_not_found(t_shell *shell, t_ast *ast)
 	flush_and_exit(shell, 0, 127);
 }
 
+/**
+ * @brief Execute the command or print appropriate error messages.
+ *
+ * Checks if the executable path is valid, is not a directory, and is 
+ * executable.
+ * If any check fails, prints a relevant error message and exits with the 
+ * correct code.
+ * If checks pass, executes the command via safe_execve.
+ *
+ * @param shell    Pointer to the shell structure.
+ * @param ast      AST node containing the command.
+ * @param pathname Full path to the executable.
+ */
 static void	exec_or_error(t_shell *shell, t_ast *ast, char *pathname)
 {
 	struct stat	st;
@@ -87,6 +123,16 @@ static void	exec_or_error(t_shell *shell, t_ast *ast, char *pathname)
 	safe_execve(shell, ast, pathname);
 }
 
+/**
+ * @brief Execute a command in a child process.
+ *
+ * Resets signal handlers, applies redirections, determines the full
+ * command path, and attempts to execute it. Prints errors and exits if
+ * the command is not found or fails to execute.
+ *
+ * @param shell Pointer to the shell structure.
+ * @param ast   AST node containing the command.
+ */
 static void	exec_command_child_process(t_shell *shell, t_ast *ast)
 {
 	char	*pathname;

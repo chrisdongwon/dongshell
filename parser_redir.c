@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 13:04:48 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/28 14:38:41 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:00:22 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@
 #include "minishell.h"
 #include "parser.h"
 
+/**
+ * @brief Add a heredoc delimiter to an AST command node.
+ *
+ * Creates a copy of the delimiter string and appends it to the
+ * heredoc_delim list in the AST.
+ *
+ * @param shell Pointer to the shell instance.
+ * @param ast   Pointer to the AST command node.
+ * @param value String containing the heredoc delimiter.
+ *
+ * @note On allocation failure, calls flush_and_exit().
+ */
 static void	add_heredoc_delim(t_shell *shell, t_ast *ast, const char *value)
 {
 	char	*delim;

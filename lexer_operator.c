@@ -6,13 +6,22 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:53:07 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 16:15:39 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 10:48:16 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "libft/libft.h"
 
+/**
+ * @brief Initialize the list of shell operator strings.
+ *
+ * Populates the provided array with known shell operators,
+ * including redirections, logical operators, pipes, and
+ * parentheses. The array is terminated with a NULL pointer.
+ *
+ * @param ops Array of 10 char pointers to store operator strings.
+ */
 static void	init_operators(char **ops)
 {
 	ops[0] = "<<";
@@ -27,6 +36,20 @@ static void	init_operators(char **ops)
 	ops[9] = 0;
 }
 
+/**
+ * @brief Match an operator at the start of a string.
+ *
+ * Compares the start of the input string against known shell
+ * operators. If a match is found, copies the matched operator
+ * into the provided buffer and returns its length.
+ *
+ * @param s      Pointer to the input string to check.
+ * @param buffer Buffer to store the matched operator string.
+ *               Must be large enough to hold the operator and
+ *               a null terminator.
+ *
+ * @return Length of the matched operator, or 0 if no match is found.
+ */
 static size_t	match_operator(const char *s, char *buffer)
 {
 	char	*ops[10];

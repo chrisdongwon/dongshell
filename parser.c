@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 19:59:08 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/29 14:51:25 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:00:12 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@
 #include "minishell.h"
 #include "parser.h"
 
+/**
+ * @brief Initialize the parser state.
+ *
+ * Allocates and initializes the parser structure, linking it to
+ * the token list produced by the lexer.
+ *
+ * @param shell Pointer to the shell instance.
+ *
+ * @note On allocation failure, calls flush_and_exit().
+ */
 static void	init_parser(t_shell *shell)
 {
 	shell->parser = malloc(sizeof(t_parser));
@@ -41,29 +51,19 @@ bool	parser(t_shell *shell)
 t_ast	*parse(t_shell *shell)
 {
 	t_ast		*ast;
-	t_ast		*left;
-	t_ast		*right;
-	t_ast_type	type;
 	t_parser	*parser;
 
 	parser = shell->parser;
+	parser->syntax_error = false;
+	ast = parse_and_or(shell);
+	if (peek(parser) && peek(parser)->type != TOKEN_PAREN_CLOSE)
+		parser->syntax_error = true;
 	if (parser->syntax_error)
-		return (0);
-	left = parse_pipeline(shell);
-	while (peek(parser) && \
-(peek(parser)->type == TOKEN_AND || peek(parser)->type == TOKEN_OR))
 	{
-		type = AST_AND;
-		if (peek(parser)->type == TOKEN_OR)
-			type = AST_OR;
-		advance(parser);
-		right = parse_pipeline(shell);
-		ast = new_ast(left, right, type);
-		if (!ast)
-			flush_and_exit(shell, "new_ast", EXIT_FAILURE);
-		left = ast;
+		free_ast(ast);
+		return (0);
 	}
-	return (left);
+	return (ast);
 }
 
 void	flush_parser(t_shell *shell)

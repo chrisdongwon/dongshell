@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:06:33 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/15 12:11:00 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:31:27 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Check if a given path is an executable file.
+ *
+ * Determines if the file at the specified path exists, is executable by
+ * the user, and is not a directory.
+ *
+ * @param path Path to the file to check.
+ * @return true if the path is an executable file, false otherwise.
+ */
 static bool	is_executable(const char *path)
 {
 	struct stat	st;
@@ -26,6 +35,18 @@ static bool	is_executable(const char *path)
 	return (!stat(path, &st) && (st.st_mode & S_IXUSR) && !S_ISDIR(st.st_mode));
 }
 
+/**
+ * @brief Build a candidate executable path by concatenating directory and
+ *        command.
+ *
+ * Allocates and returns a new string containing the directory, a slash,
+ * and the command appended together. Returns NULL if allocation fails.
+ *
+ * @param dir     Directory path.
+ * @param command Command name.
+ * @return Pointer to the newly allocated candidate path string, or NULL on 
+ *         failure.
+ */
 static char	*build_candidate(const char *dir, const char *command)
 {
 	char	*candidate;

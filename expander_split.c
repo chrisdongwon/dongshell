@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:56:50 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/10 17:17:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 11:15:32 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Reassign the head pointer to a new list or next node.
+ *
+ * If new_list is non-NULL, sets *head to new_list; otherwise sets *head to next.
+ *
+ * @param head     Pointer to the head pointer to reassign.
+ * @param new_list New list to assign as the head, or NULL.
+ * @param next     The fallback node to assign if new_list is NULL.
+ */
 static void	reassign_head(t_list **head, t_list *new_list, t_list *next)
 {
 	if (new_list)
@@ -25,6 +34,17 @@ static void	reassign_head(t_list **head, t_list *new_list, t_list *next)
 		*head = next;
 }
 
+/**
+ * @brief Append a new word token to the list.
+ *
+ * Duplicates the substring [start, start+len) and appends it as a TOKEN_WORD
+ * token to the list. On failure, clears the list and exits.
+ *
+ * @param shell Pointer to the shell state.
+ * @param list  Pointer to the token list to append to.
+ * @param start Start of the substring to duplicate.
+ * @param len   Length of the substring.
+ */
 static void	add_word(t_shell *shell, t_list **list, char *start, size_t len)
 {
 	bool	result;
@@ -42,6 +62,17 @@ static void	add_word(t_shell *shell, t_list **list, char *start, size_t len)
 	}
 }
 
+/**
+ * @brief Split a string by IFS whitespace and delimiters into tokens.
+ *
+ * Splits the input string according to the IFS variable's whitespace and
+ * delimiter characters. Returns a list of tokens (words and delimiters).
+ *
+ * @param shell Pointer to the shell state.
+ * @param str   The input string to split.
+ * @param ifs   String containing IFS whitespace and delimiters.
+ * @return      List of tokens created from the input string.
+ */
 static t_list	*split_by_ifs(t_shell *shell, char *str, const char *ifs)
 {
 	char	*start;

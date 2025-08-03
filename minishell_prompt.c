@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   minishell_prompt.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:11:54 by cwon              #+#    #+#             */
-/*   Updated: 2025/07/17 14:07:15 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 10:58:28 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,25 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+/**
+ * @brief Build the shell prompt string from user, host, and cwd.
+ *
+ * Concatenates the given username, hostname, and current working
+ * directory into a prompt string of the form:
+ *     user@host:cwd$ 
+ *
+ * All three input strings are freed before returning the result.
+ *
+ * @param shell Pointer to the shell instance (used for error handling).
+ * @param user  Dynamically allocated username string.
+ * @param host  Dynamically allocated hostname string.
+ * @param cwd   Dynamically allocated current working directory string.
+ *
+ * @return Newly allocated prompt string.
+ *
+ * @note On allocation failure, frees all parameters and calls
+ *       flush_and_exit(), terminating the program.
+ */
 static char	*build_prompt(t_shell *shell, char *user, char *host, char *cwd)
 {
 	char	*result;
@@ -47,6 +66,17 @@ static char	*build_prompt(t_shell *shell, char *user, char *host, char *cwd)
 	return (result);
 }
 
+/**
+ * @brief Retrieve the system hostname.
+ *
+ * Attempts to get the hostname from the "HOSTNAME" environment
+ * variable. If unset, reads it from `/etc/hostname`. Falls back
+ * to "localhost" if neither method succeeds.
+ *
+ * @param env_list Pointer to the environment variable list.
+ *
+ * @return Newly allocated hostname string.
+ */
 static char	*get_hostname(t_list *env_list)
 {
 	char		*newline;
@@ -72,6 +102,16 @@ static char	*get_hostname(t_list *env_list)
 	return (ft_strdup(buffer));
 }
 
+/**
+ * @brief Retrieve the username from environment variables.
+ *
+ * Attempts to get the username from the "USER" environment
+ * variable. Falls back to "unknown_user" if not found.
+ *
+ * @param envp_list Pointer to the environment variable list.
+ *
+ * @return Newly allocated username string.
+ */
 static char	*get_username(t_list *envp_list)
 {
 	const char	*username;
@@ -82,6 +122,19 @@ static char	*get_username(t_list *envp_list)
 	return (ft_strdup("unknown_user"));
 }
 
+/**
+ * @brief Generate the shell prompt string.
+ *
+ * Retrieves the username, hostname, and current working directory,
+ * then constructs the shell prompt using build_prompt().
+ *
+ * @param shell Pointer to the shell instance.
+ *
+ * @return Newly allocated prompt string.
+ *
+ * @note On allocation failure, calls flush_and_exit(), terminating
+ *       the program.
+ */
 static char	*get_prompt(t_shell *shell)
 {
 	char	*cwd;
