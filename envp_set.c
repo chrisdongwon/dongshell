@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:22 by cwon              #+#    #+#             */
-/*   Updated: 2025/08/03 10:38:06 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 15:32:50 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	set_env(t_shell *shell, const char *key, const char *value, \
 bool exported)
 {
 	t_list	*node;
+	t_envp	*envp_node;
 
 	if (!key)
 		return ;
@@ -109,5 +110,10 @@ bool exported)
 	if (node)
 		update_env((t_envp *)node->content, value, exported);
 	else
-		prepend_env_node(shell, new_envp(shell, key, value, exported));
+	{
+		envp_node = new_envp(shell, key, value, exported);
+		if (!envp_node)
+			flush_and_exit(shell, "new_envp", EXIT_FAILURE);
+		prepend_env_node(shell, envp_node);
+	}
 }

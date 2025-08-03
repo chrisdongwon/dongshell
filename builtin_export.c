@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:20:39 by cwon              #+#    #+#             */
-/*   Updated: 2025/08/03 11:48:54 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 15:42:30 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,20 @@ static bool	is_valid_identifier_export(const char *key)
  * @param key   The variable name to export.
  * @return EXIT_SUCCESS on success, EXIT_FAILURE on invalid identifier.
  */
-static int	export_key_only(t_shell *shell, char *key)
+// static int	export_key_only(t_shell *shell, char *key)
+// {
+// 	if (!is_valid_identifier_export(key))
+// 	{
+// 		ft_putstr_fd("export: `", STDERR_FILENO);
+// 		ft_putstr_fd(key, STDERR_FILENO);
+// 		ft_putstr_fd("`: not a valid identifier\n", STDERR_FILENO);
+// 		return (EXIT_FAILURE);
+// 	}
+// 	set_env(shell, key, 0, true);
+// 	return (EXIT_SUCCESS);
+// }
+
+static int export_key_only(t_shell *shell, char *key)
 {
 	if (!is_valid_identifier_export(key))
 	{
@@ -71,7 +84,7 @@ static int	export_key_only(t_shell *shell, char *key)
 		ft_putstr_fd("`: not a valid identifier\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	set_env(shell, key, NULL, true);
+	set_env(shell, key, "", true);
 	return (EXIT_SUCCESS);
 }
 
