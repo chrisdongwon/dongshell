@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 11:48:49 by cwon              #+#    #+#             */
-/*   Updated: 2025/08/03 11:11:35 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 12:29:09 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,18 @@ struct s_expander
 
 /* ================= expander_heredoc_util.c ================= */
 /**
- * @brief Collect heredoc content and store it in a temporary file.
+ * @brief Collects heredoc input lines until a delimiter is encountered.
  *
- * @param shell    Pointer to the shell state.
- * @param delim    Heredoc delimiter string.
- * @param filename Path to store the heredoc contents.
- * @return true on success, false on error.
+ * Repeatedly reads lines from stdin and writes them to the file descriptor
+ * until the line matches the delimiter string or an error occurs.
+ *
+ * @param shell  Pointer to the shell state.
+ * @param result Pointer to a boolean flag set to false on error or EOF.
+ * @param fd     File descriptor to write the heredoc input to.
+ * @param delim  The heredoc delimiter string indicating end of input.
  */
-bool	collect_heredoc(t_shell *shell, const char *delim, \
-const char *filename);
+void	collect_heredoc_loop(t_shell *shell, bool *result, int fd, \
+const char *delim);
 
 /* ================= expander_heredoc.c ================= */
 /**
@@ -160,6 +163,17 @@ char	*make_temp_filename(int i);
  * @return File descriptor, or -1 on error.
  */
 int		open_heredoc_file(const char *filename);
+
+/**
+ * @brief Prints a warning message that heredoc was terminated by EOF.
+ * 
+ * Prints to standard error a message indicating the here-document input 
+ * was ended prematurely by an end-of-file (EOF) signal before the delimiter 
+ * string was encountered.
+ * 
+ * @param delim The heredoc delimiter string that was expected.
+ */
+void	heredoc_eof_warning(const char *delim);
 
 /* ================= expander_var.c ================= */
 /**

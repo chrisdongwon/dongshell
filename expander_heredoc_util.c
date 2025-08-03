@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:19:20 by cwon              #+#    #+#             */
-/*   Updated: 2025/08/03 11:18:29 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 12:37:06 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ static bool	write_heredoc_line(t_shell *shell, int fd, char *line)
 		perror("new_token");
 		return (false);
 	}
-	expand_variable(shell, token);
+	if (quote != '\'')
+		expand_variable(shell, token);
 	if (write(fd, token->value, ft_strlen(token->value)) == -1 || \
 write(fd, "\n", 1) == -1)
 	{
@@ -105,17 +106,39 @@ write(fd, "\n", 1) == -1)
 }
 
 /**
- * @brief Collects heredoc input lines until a delimiter is encountered.
- *
- * Repeatedly reads lines from stdin and writes them to the file descriptor
- * until the line matches the delimiter string or an error occurs.
- *
- * @param shell  Pointer to the shell state.
- * @param result Pointer to a boolean flag set to false on error or EOF.
- * @param fd     File descriptor to write the heredoc input to.
- * @param delim  The heredoc delimiter string indicating end of input.
+ * @brief Reads a single heredoc line with EOF warning on early termination.
+ * 
+ * Wraps around read_heredoc_line() and checks if EOF (Ctrl-D) was received
+ * (indicated by *line == NULL). If EOF is detected before the delimiter, 
+ * prints a warning message to stderr and sets *result to false.
+ * 
+ * @param shell Pointer to the shell state (unused here but kept for 
+ *              consistency).
+ * @param line Pointer to a char* that will point to the allocated line read.
+ *             Must be freed by the caller if non-NULL.
+ * @param delim The heredoc delimiter string, used for the EOF warning message.
+ * @param result Pointer to a boolean flag; set to false on error or EOF.
+ * 
+ * @return true if a line was successfully read (non-NULL line), 
+ *         false otherwise.
  */
-static void	collect_heredoc_loop(t_shell *shell, bool *result, int fd, \
+static bool	read_heredoc_line_with_warning(char **line, const char *delim, \
+bool *result)
+{
+	if (!read_heredoc_line(line))
+	{
+		*result = false;
+		return (false);
+	}
+	if (*line == 0)
+	{
+		heredoc_eof_warning(delim);
+		return (false);
+	}
+	return (true);
+}
+
+void	collect_heredoc_loop(t_shell *shell, bool *result, int fd, \
 const char *delim)
 {
 	char	*line;
@@ -123,12 +146,9 @@ const char *delim)
 	line = 0;
 	while (true)
 	{
-		if (!read_heredoc_line(&line))
-		{
-			*result = false;
+		if (!read_heredoc_line_with_warning(&line, delim, result))
 			break ;
-		}
-		if (!ft_strcmp(line, delim))
+		if (line && delim && !ft_strcmp(line, delim))
 		{
 			free(line);
 			break ;
@@ -142,25 +162,4 @@ const char *delim)
 		free(line);
 		line = 0;
 	}
-}
-
-bool	collect_heredoc(t_shell *shell, const char *delim, const char *filename)
-{
-	bool	result;
-	int		fd;
-
-	fd = open_heredoc_file(filename);
-	if (fd < 0)
-		return (false);
-	result = true;
-	collect_heredoc_loop(shell, &result, fd, delim);
-	if (!result)
-	{
-		if (fd >= 0)
-			close(fd);
-		unlink(filename);
-	}
-	else
-		close(fd);
-	return (result);
 }

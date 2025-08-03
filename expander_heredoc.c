@@ -6,7 +6,7 @@
 /*   By: cwon <cwon@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 13:36:27 by cwon              #+#    #+#             */
-/*   Updated: 2025/08/03 11:17:19 by cwon             ###   ########.fr       */
+/*   Updated: 2025/08/03 12:24:02 by cwon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@
 #include "lexer.h"
 #include "libft/libft.h"
 #include "minishell.h"
+
+static bool	collect_heredoc(t_shell *shell, const char *delim, \
+const char *filename)
+{
+	bool	result;
+	int		fd;
+
+	fd = open_heredoc_file(filename);
+	if (fd < 0)
+		return (false);
+	result = true;
+	collect_heredoc_loop(shell, &result, fd, delim);
+	if (!result)
+	{
+		if (fd >= 0)
+			close(fd);
+		unlink(filename);
+	}
+	else
+		close(fd);
+	return (result);
+}
 
 /**
  * @brief Find the next heredoc token in a redirection list.
